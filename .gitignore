@@ -1,0 +1,9 @@
+.idea
+node_modules
+logs
+.idea/
+*.log
+target/
+
+*.DS_Store
+public/ep.config.json

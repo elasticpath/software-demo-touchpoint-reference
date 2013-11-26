@@ -1,0 +1,24 @@
+{
+  "logging":{
+    "logInfo":true,
+    "logWarnings":true,
+    "logErrors":true
+  },
+  "debug":{
+    "showInstrumentation":false
+  },
+  "cortexApi":{
+    "path":"cortex",
+    "scope":"mobee"
+  },
+  "deployMode":"development",
+  "requireAuthToCheckout":true,
+  "viewFadeInValue":500,
+  "routes": {
+    "newAddress":"#newaddressform",
+    "cart":"#mycart",
+    "category":"#category",
+    "profile":"#profile",
+    "itemDetail":"#itemdetail"
+  }
+}

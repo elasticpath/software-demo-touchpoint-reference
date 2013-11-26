@@ -1,0 +1,26 @@
+//    Elastic Path Style Loader 0.1
+//
+//    Notes:
+//        This file handles loading of all core them and customer theme less stylesheets,
+//        and is compiled to /public/style/style.css which houses all non-framework styles
+//        used in the front-end layout & aesthetic skin.
+//
+//    Child-Theming:
+//        In order to create a child-theme (which will serve to override aspects of the core theme)
+//        please create a blah blah blah...
+
+
+// import selected Bootstrap 3 styles for core theme
+@import url("../ui-storefront/stylesrc/theme-core/load-bootstrap.less");
+
+
+// import core theme base stylesheet (which in-turn imports the core theme's subordinate .less stylesheets)
+// @import url("./theme-core/theme-base.less");
+
+
+
+// import child theme base stylesheet (which in-turn imports the sub-theme's subordinate .less stylesheets)
+// @import url("./theme-software-dark/theme-base.less");
+
+// import child theme base stylesheet (which in-turn imports the sub-theme's subordinate .less stylesheets)
+@import url("./theme-software-light/theme-base.less");

@@ -1,0 +1,307 @@
+@import 'auth';
+
+// custom load Bootstrap 3 less/css chunks
+@import 'load-bootstrap';
+
+
+// styles built assuming/overriding Bootstrap 3
+@import "variables";
+@import "mixins";
+@import "app-header";
+@import "cart";
+@import "itemdetail";
+@import "category";
+@import "pagination";
+@import "search";
+@import "modal";
+@import "profile";
+
+
+// css for plugins
+@import 'jquery.toastmessage.less';
+
+
+.app-main{
+  min-height: 500px;
+}
+
+// --------- General Bootstrap 3.0 Overrides
+
+.loading-indicator{
+  position: relative;
+  background: transparent url(images/theme-software-dark/loading-spinner.gif) no-repeat center center;
+  background-size: contain;
+  width: 32px;
+  height: 32px;
+  margin-top: 30px;
+
+  &:after{
+    display: block;
+    position: absolute;
+    left: 38px;
+    width: 200px;
+    height: 30px;
+    line-height: 30px;
+    content: "LOADING";
+    font-size: 12px;
+    color: @brand-secondary;
+    font-weight: 600;
+  }
+}
+
+header{
+  .loading-indicator{
+    display: none;
+  }
+}
+
+.btn,
+.btn-lg{
+    // tweak default radius, other appearance
+    border-radius: 2px;
+    text-shadow: 1px 2px rgba(0,0,0,0.2);
+
+    // add faint shadow to bottom of buttons
+    -webkit-box-shadow:  0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+    box-shadow:          0px 2px 0px 0px rgba(0, 0, 0, 0.2);
+}
+
+.row{ // this should to be more specific
+    margin-bottom: 1rem;
+}
+
+.container{
+
+}
+
+hr{ // why so big
+    margin: 60px 0;
+}
+
+
+
+// --------- End General Bootstrap 3.0 Overrides
+
+
+body{
+  margin-top: 130px; //space out the page top to accommodate fixed nav at starting scroll position
+  background: @theme-background;
+  font-family: @font-sans;
+  color: @base-text-color;
+
+  @media (max-width: @grid-float-breakpoint) {
+    margin-top: 60px; //tuck the page top margin up when the nav collapses
+  }
+
+  font-family: @font-sans;
+
+  h1,h2,h3,h4,h5,h6{
+    color: @highlight-primary;
+    font-family: @font-sans;
+    a{
+      color: @highlight-primary;
+      font-weight: 300;
+      &:hover{
+        color:   darken(@highlight-primary,15%);
+      }
+    }
+  }
+
+
+
+}
+
+ul{
+  list-style: none;
+}
+.btn-cmd{
+    // border:0 solid grey;
+    // font-size:100%;
+    // background:transparent;
+    // color:@defaultLinkColor;
+}
+.btn-cmd:hover{
+    // border:0;
+    // background:rgba(150,150,150,.3);
+}
+.btn-cmd:active{
+    // border:0;
+    // background:rgba(150,150,150,.4);
+    // text-shadow:7px 7px 12px rgba(150, 150, 150, 1);
+}
+.app-main{
+  // .container; // apply BOOTSTRAP container styling
+  // max-width: @container-lg-desktop; // set BOOTSTRAP default container width constraint
+  padding-bottom: 6rem;
+}
+.category-items-container, .search-results-container, .purchase-confirmation-container{
+  // margin-left:auto;
+  // margin-right:auto;
+  // margin-top:1rem;
+  // border:1px solid #dddddd;
+  // border-radius:4rem;
+  // max-width:80rem;
+  // padding:1rem 4rem 4rem 4rem;
+
+  // .make-row(); // apply BOOTSTRAP row styling
+}
+
+
+#contextmenu{
+  margin:0;
+  padding:0;
+  border: 1px solid #000;
+  background:@contextMenuBgColorDefault;
+}
+#contextmenu li {
+  list-style-type:none;
+  margin:1px;
+  padding:2px;
+  color:@contextMenuItemColorDefault;
+  cursor:pointer;
+}
+#contextmenu li.hover{
+  background: #ddd;
+}
+
+.home-container{
+  background:url(images/hm-commerce-software-bb.jpg) no-repeat;
+  min-height:500px;
+  background-size: 100%;
+  text-align:center;
+}
+.field-content{
+
+  max-width:75rem;
+  color:#ffffff;
+  margin:0 auto;
+  font-family: 'ProximaNova-Regular',Helvetica,Arial,sans-serif;
+  padding-top:8rem;
+
+}
+.field-content h2{
+  font-size: 48px;
+  line-height: 47px;
+}
+.theme-variable-item-value-dark .btn-cmd{
+    // color:#111111;
+}
+.theme-variable-item-value-light .btn-cmd{
+    // color:#eeeeee;
+}
+/*
+  Begin Login Form
+*/
+  /* oAuth Form Feedback */
+.feedback-label{
+  color:red;
+}
+
+.dropdown-menu{
+  display:none;
+  position:absolute;
+  background-color:@bodyBgColor;
+}
+.oAuth-logout{
+  display:none;
+}
+
+/*end login form*/
+
+
+.activity-indicator-container{
+  text-align: center;
+}
+.activity-indicator{
+  margin-left:auto;
+  margin-right: auto;
+}
+
+.pace .pace-progress {
+  background: red;
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  height: 2px;
+}
+
+.pace-inactive {
+  display: none;
+}
+
+.itemdetail-availability-state{
+    padding: 0;
+
+    &[data-i18n="AVAILABLE"]{
+      label{
+          display: inline-block;
+          font-size: 1.3rem;
+          font-weight: 400;
+          text-transform: uppercase;
+          color: @availability-color-available;
+      }
+
+      .icon{
+          // display: inline-block;
+          // width: 100%;
+          // .pull-right;
+          .glyphicon;
+          .glyphicon-thumbs-up;
+          // margin-left: 6px;
+          font-size: 24px;
+          // margin-right: 6px;
+          margin-top: -8px;
+      }
+    }
+
+    &[data-i18n="AVAILABLE_FOR_PRE_ORDER"]{
+      label{
+          display: inline-block;
+          font-size: 1.3rem;
+          font-weight: 400;
+          text-transform: uppercase;
+          color: @availability-color-pending;
+      }
+
+      .icon{
+          // display: inline-block;
+          // width: 100%;
+          // .pull-right;
+          .glyphicon;
+          .glyphicon-time;
+          // margin-left: 6px;
+          font-size: 24px;
+          // margin-right: 6px;
+          margin-top: -8px;
+      }
+    }
+
+    &[data-i18n="NOT_AVAILABLE"]{
+      label{
+          display: inline-block;
+          font-size: 1.3rem;
+          font-weight: 400;
+          text-transform: uppercase;
+          color: @availability-color-unavailable;
+      }
+
+      .icon{
+          // display: inline-block;
+          // width: 100%;
+          // .pull-right;
+          .glyphicon;
+          .glyphicon-ban-circle;
+          // margin-left: 6px;
+          font-size: 24px;
+          // margin-right: 6px;
+          margin-top: -8px;
+      }
+    }
+
+}
+
+.is-hidden {
+  display: none;
+}
+
