@@ -9,13 +9,14 @@ Set up
 Get the code
 
 	git clone git@github.elasticpath.net:cortex/Software-Demo.git
+	cd Software-Demo
 	git submodule init
 	git submodule update
 
 Install the required node libraries
 
 	cd ui-storefront
-	npm install -g --verbose
+	npm install 
 
 	cd ..
 	npm install grunt-contrib-uglify grunt-contrib-watch grunt-contrib-less grunt-contrib-requirejs
