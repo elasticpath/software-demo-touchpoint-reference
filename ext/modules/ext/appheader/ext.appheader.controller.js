@@ -53,7 +53,7 @@ define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.
         // load main nav
         EventBus.trigger('layout.loadRegionContentRequest',{
           region:'mainNavRegion',
-          module:'ext.ia',
+          module:'ia',
           view:'MainNavView'
         });
         logoContainer = $('.logo-container');

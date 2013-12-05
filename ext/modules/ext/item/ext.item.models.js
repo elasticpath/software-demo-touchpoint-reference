@@ -1,14 +1,13 @@
-define(['ep','app','backbone','jsonpath'],
-	function(ep, app, Backbone, Cortex, URI) {
-		var ItemModels = {};
-
+define(['ep', 'app', 'backbone'],
+  function (ep, app, Backbone) {
+    var ItemModels = {};
 
 
     var itemModel = Backbone.Model.extend({
-      getUrl: function(uri) {
-        return ep.app.config.cortexApi.path + '/' + ep.ui.decodeUri(uri)  + '?zoom=availability,addtocartform,price,rate,definition,definition:assets:element';
+      getUrl: function (href) {
+        return ep.ui.decodeUri(href) + '?zoom=availability,addtocartform,price,rate,definition,definition:assets:element';
       },
-      parse:function(item){
+      parse: function (item) {
 
 
         var itemObj = {};
@@ -19,7 +18,7 @@ define(['ep','app','backbone','jsonpath'],
          * Display Name
          *
          * */
-        itemObj.displayName  = jsonPath(item, "$.['_definition'][0]['display-name']")[0];
+        itemObj.displayName = jsonPath(item, "$.['_definition'][0]['display-name']")[0];
         //itemObj.displayName = item['_definition'][0]['display-name'];
 
         /*
@@ -45,7 +44,7 @@ define(['ep','app','backbone','jsonpath'],
         var attrArrayLen = 0;
         var rawAttributes = jsonPath(item, "$.'_definition'..'details'")[0];
 
-        if (rawAttributes){
+        if (rawAttributes) {
           attrArrayLen = rawAttributes.length;
         }
 
@@ -60,36 +59,34 @@ define(['ep','app','backbone','jsonpath'],
           if (features.key == attrKey) {
             addAttributeToList(attributesArray, currObj, features.index);
           }
-
           if (sysRequirement.key == attrKey) {
             addAttributeToList(attributesArray, currObj, sysRequirement.index);
           }
         }
 
         if (attributesArray.length == 0) {
-          attributesArray = [{
-            attrKey: 'longDesc',
-            displayName: 'Details',
-            displayValue: 'No Description Available.'
-          }];
-        }
+          attributesArray = [
+            {
+              attrKey: 'longDesc',
+              displayName: 'Details',
+              displayValue: 'No Description Available.'
+            }
+          ];
 
+        }
         itemObj.details = attributesArray;
 
-
         /*
-        *
-        * Add to Cart Action test
-        *
-        * */
+         *
+         * Add to Cart Action test
+         *
+         * */
         itemObj.addtocart = {};
         itemObj.addtocart.actionlink = null;
         var addToCartFormAction = jsonPath(item, "$._addtocartform..links[?(@.rel='addtodefaultcartaction')].rel")[0];
-        if (addToCartFormAction){
-          itemObj.addtocart.actionlink = jsonPath(item, "$._addtocartform..links[?(@.rel='addtodefaultcartaction')].uri")[0];;
+        if (addToCartFormAction) {
+          itemObj.addtocart.actionlink = jsonPath(item, "$._addtocartform..links[?(@.rel='addtodefaultcartaction')].href")[0];
         }
-
-
 
 
         /*
@@ -101,7 +98,7 @@ define(['ep','app','backbone','jsonpath'],
         itemObj.asset.url = '';
         var assetsListArray = [];
         var assetsArray = jsonPath(item, "$._definition.._assets.._element")[0];
-        if (assetsArray){
+        if (assetsArray) {
           var defaultImage = jsonPath(item, "$._definition.._assets.._element[?(@.name='default-image')]")[0];
           var assetObj = {};
 
@@ -121,7 +118,9 @@ define(['ep','app','backbone','jsonpath'],
          *
          * */
         var availabilityObj = jsonPath(item, '$._availability')[0];
-        itemObj.availability = parseAvailability(availabilityObj);
+        if (availabilityObj) {
+          itemObj.availability = parseAvailability(availabilityObj);
+        }
 
 
         /*
@@ -130,12 +129,19 @@ define(['ep','app','backbone','jsonpath'],
          *
          * */
         itemObj.price = {};
+        itemObj.price.listed = {};
+        itemObj.price.purchase = {};
+        itemObj.rateCollection = [];
 
-        var listPriceObject = jsonPath(item, "$.['_price'].['list-price']")[0];
-        itemObj.price.listed = parsePrice(listPriceObject);
+        var listPriceObject = jsonPath(item, '$._price..list-price[0]')[0];
+        if (listPriceObject) {
+          itemObj.price.listed = parsePrice(listPriceObject);
+        }
 
-        var purchasePriceObject = jsonPath(item, "$.['_price'].['purchase-price']")[0];
-        itemObj.price.purchase = parsePrice(purchasePriceObject);
+        var purchasePriceObject = jsonPath(item, '$._price..purchase-price[0]')[0];
+        if (purchasePriceObject) {
+          itemObj.price.purchase = parsePrice(purchasePriceObject);
+        }
 
         var rates = jsonPath(item, '$._rate..rate')[0];
         itemObj.rateCollection = parseRates(rates);
@@ -150,11 +156,11 @@ define(['ep','app','backbone','jsonpath'],
 
         return itemObj;
       },
-      getDefaultImage:function(){
+      getDefaultImage: function () {
         var retVal = null;
-        if(this.attributes.assets && (this.attributes.assets.length > 0)){
-          for (var i = 0;i < this.attributes.assets.length;i++){
-            if (this.attributes.assets[i].name === 'default-image'){
+        if (this.attributes.assets && (this.attributes.assets.length > 0)) {
+          for (var i = 0; i < this.attributes.assets.length; i++) {
+            if (this.attributes.assets[i].name === 'default-image') {
               retVal = this.attributes.assets[i];
               break;
             }
@@ -162,10 +168,10 @@ define(['ep','app','backbone','jsonpath'],
         }
         return retVal;
       },
-      isAddToCartEnabled:function(){
+      isAddToCartEnabled: function () {
         var retVal = false;
-        if (this.attributes.addtocart){
-          if(this.attributes.addtocart.actionlink){
+        if (this.attributes.addtocart) {
+          if (this.attributes.addtocart.actionlink) {
             return true;
           }
         }
@@ -175,8 +181,8 @@ define(['ep','app','backbone','jsonpath'],
 
     var itemAttributeModel = Backbone.Model.extend();
     var itemAttributeCollection = Backbone.Collection.extend({
-      model:itemAttributeModel,
-      parse:function(collection){
+      model: itemAttributeModel,
+      parse: function (collection) {
         return collection;
       }
     });
@@ -185,7 +191,7 @@ define(['ep','app','backbone','jsonpath'],
 
 
     // function to parse availability (states and release-date)
-    var parseAvailability = function(availabilityObj) {
+    var parseAvailability = function (availabilityObj) {
       var availability = {};
 
       if (availabilityObj) {
@@ -203,22 +209,25 @@ define(['ep','app','backbone','jsonpath'],
     };
 
     // function to parse one-time price (list or purchase)
-    var parsePrice = function(priceObj) {
+    var parsePrice = function (rawObject) {
       var price = {};
 
-      if (priceObj) {
+      try {
         price = {
-          currency: priceObj[0].currency,
-          amount: priceObj[0].amount,
-          display: priceObj[0].display
+          currency: jsonPath(rawObject, '$.currency')[0],
+          amount: jsonPath(rawObject, '$.amount')[0],
+          display: jsonPath(rawObject, '$.display')[0]
         }
+      }
+      catch (error) {
+        ep.logger.error('Error building price object: ' + error.message);
       }
 
       return price;
     };
 
     // function to parse rates collection
-    var parseRates = function(rates) {
+    var parseRates = function (rates) {
       var ratesArrayLen = 0;
       var rateCollection = [];
 
@@ -247,7 +256,7 @@ define(['ep','app','backbone','jsonpath'],
       return rateCollection;
     }
 
-    var addAttributeToList = function(list, rawObj, insertIndex) {
+    var addAttributeToList = function (list, rawObj, insertIndex) {
       var attributeObj = {
         attrKey: jsonPath(rawObj, 'name'),
         displayName: jsonPath(rawObj, 'display-name'),
@@ -258,10 +267,10 @@ define(['ep','app','backbone','jsonpath'],
     }
 
     // Required, return the module for AMD compliance
-	return {
-    ItemModel:itemModel,
-    ItemAttributeCollection:itemAttributeCollection,
-    ListPriceModel:listPriceModel
-  };
-});
+    return {
+      ItemModel: itemModel,
+      ItemAttributeCollection: itemAttributeCollection,
+      ListPriceModel: listPriceModel
+    };
+  });
 

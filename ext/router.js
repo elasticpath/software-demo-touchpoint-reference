@@ -17,12 +17,12 @@ define(['marionette','eventbus','pace'],
           view:'IndexLayout'
         });
       },
-      item: function(uri) {
+      item: function(href) {
         EventBus.trigger('layout.loadRegionContentRequest',{
           region:'appMainRegion',
           module:'ext.item',
           view:'DefaultView',
-          data:uri
+          data:href
         });
       },
       cart: function(){
@@ -30,6 +30,13 @@ define(['marionette','eventbus','pace'],
           region:'appMainRegion',
           module:'ext.cart',
           view:'DefaultView'
+        });
+      },
+      checkout: function() {
+        EventBus.trigger('layout.loadRegionContentRequest', {
+          region:'appMainRegion',
+          module:'ext.cart',
+          view:'CheckoutView'
         });
       },
       confirmation: function(id){
@@ -40,15 +47,15 @@ define(['marionette','eventbus','pace'],
           data:id
         });
       },
-      category: function(uri, pageuri) {
+      category: function(href, pageHref) {
         pace.start();
         EventBus.trigger('layout.loadRegionContentRequest',{
           region:'appMainRegion',
           module:'ext.category',
           view:'DefaultView',
           data: {
-            uri: uri,
-            pageUri: pageuri
+            href: href,
+            pageHref: pageHref
           }
         });
       },
@@ -63,15 +70,15 @@ define(['marionette','eventbus','pace'],
       profile: function(){
         EventBus.trigger('layout.loadRegionContentRequest',{
           region:'appMainRegion',
-          module:'ext.profile',
+          module:'profile',
           view:'DefaultView'
         });
       },
-      settings: function() {
+      newaddressform: function() {
         EventBus.trigger('layout.loadRegionContentRequest',{
-          region:'appMainRegion',
-          module:'settings',
-          view:'IndexLayout'
+          region: 'appMainRegion',
+          module: 'address',
+          view: 'DefaultCreateAddressView'
         });
       }
     };
@@ -81,15 +88,16 @@ define(['marionette','eventbus','pace'],
         '': 'index',
         'home': 'index',
         'category' : 'category',
-        'category/:uri' : 'category',
-        'category/:uri/:pageuri' : 'category',
+        'category/:href' : 'category',
+        'category/:href/:pagehref' : 'category',
         'search' : 'search',
         'search/:keywords' : 'search',
-        'itemdetail/:uri': 'item',
-        'settings': 'settings',
+        'itemdetail/:href': 'item',
         'profile': 'profile',
         'mycart': 'cart',
-        'confirmation/:id': 'confirmation'
+        'checkout': 'checkout',
+        'confirmation/:id': 'confirmation',
+        'newaddressform' : 'newaddressform'
       },
       controller:appRouterController
     });

@@ -7,16 +7,16 @@
  *
  * 
  */
-define(['app', 'ep', 'i18n', 'eventbus', 'cortex', 'receipt.models', 'ext.receipt.views', 'text!modules/ext/receipt/ext.receipt.templates.html', 'text!modules/base/receipt/base.receipt.templates.html'],
-  function(App, ep, i18n, EventBus, Cortex, Model, View, template, baseTemplate){
+define(['app', 'ep', 'i18n', 'eventbus', 'receipt.models', 'receipt.views', 'text!modules/base/receipt/base.receipt.templates.html', 'text!modules/ext/receipt/ext.receipt.templates.html'],
+  function(App, ep, i18n, EventBus, Model, View, template, extTemplate){
 
     $('#TemplateContainer').append(template);
-    $('#TemplateContainer').append(baseTemplate);
+    $('#TemplateContainer').append(extTemplate);
 
     _.templateSettings.variable = 'E';
 
     // Purchase Confirmation View
-    var defaultView = function(uri){
+    var defaultView = function(link){
 
 
       if (ep.app.isUserLoggedIn()) {
@@ -37,12 +37,12 @@ define(['app', 'ep', 'i18n', 'eventbus', 'cortex', 'receipt.models', 'ext.receip
           model:purchaseConfirmationModel
         });
 
-        var rawUri = ep.ui.decodeUri(uri);
+        var rawLink = ep.ui.decodeUri(link);
 
-        var zoomedUri = rawUri + '?zoom=billingaddress,paymentmeans:element,lineitems:element,lineitems:element:rates';
-       // var zoomedUri = rawUri + '?zoom=billingaddress, paymentmeans, lineitems:element, lineitems:element:rate';
+        // FIXME zoom should be inside model
+       var zoomedLink = rawLink + '?zoom=billingaddress, paymentmeans:element, lineitems:element, lineitems:element:rate';
         purchaseConfirmationModel.fetch({
-          url:zoomedUri,
+          url:zoomedLink,
           success:function(response){
 
             purchaseConfirmationLayout.purchaseConfirmationRegion.show(purchaseConfirmationView);

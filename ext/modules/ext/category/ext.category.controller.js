@@ -6,12 +6,20 @@
  * Time: 1:31 PM
  *
  */
-define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 'text!modules/ext/category/ext.category.templates.html', 'text!modules/base/category/base.category.templates.html', 'pace'],
-  function (App, ep, EventBus, Model, View, template, baseTemplate, pace) {
+//define(['app', 'ep', 'eventbus', 'category.models', 'category.views', 'text!modules/base/category/base.category.templates.html', 'pace'],
+//  function (App, ep, EventBus, Model, View, template, pace) {
+define(function (require) {
+    var App = require('app'),
+        ep = require('ep'),
+        EventBus = require('eventbus'),
+        pace = require('pace'),
+        Model = require('ext.category.models'),
+        View = require('ext.category.views'),
+        template = require('text!modules/base/category/base.category.templates.html'),
+        extTemplate = require('text!modules/ext/category/ext.category.templates.html');
 
     $('#TemplateContainer').append(template);
-    $('#TemplateContainer').append(baseTemplate);
-
+    $('#TemplateContainer').append(extTemplate);
     _.templateSettings.variable = 'E';
 
     /*
@@ -20,17 +28,17 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
      *
      *
      */
-    var defaultView = function (uriObj) {
+    var defaultView = function (hrefObj) {
       pace.start();
       var categoryLayout = new View.DefaultView();
       var categoryModel = new Model.CategoryModel();
 
 
-      var uri = uriObj.uri;
-      var pageUri = uriObj.pageUri;
+      var href = hrefObj.href;
+      var pageHref = hrefObj.pageHref;
 
       categoryModel.fetch({
-        url: categoryModel.getUrl(uri),
+        url: categoryModel.getUrl(href),
         success: function (response) {
           categoryLayout.categoryTitleRegion.show(
             new View.CategoryTitleView({
@@ -38,13 +46,13 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
             })
           );
 
-          if (!pageUri) {
-            pageUri = response.attributes.itemUri;
+          if (!pageHref) {
+            pageHref = response.get('itemLink');
           }
 
           var reqObj = {
-            fetchUri: pageUri,
-            categoryUri: response.attributes.uri
+            fetchHref: pageHref,
+            categoryHref: response.get('href')
           };
 
           EventBus.trigger('category.fetchCategoryItemPageModelRequest', reqObj);
@@ -71,10 +79,10 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
       pace.start();
       var categoryItemModel = new Model.CategoryItemPageModel();
       categoryItemModel.fetch({
-        url: categoryItemModel.getUrl(reqObj.fetchUri),
+        url: categoryItemModel.getUrl(reqObj.fetchHref),
         success: function (itemResponse) {
-          var paginationModel = new Model.CategoryPaginationModel(itemResponse.attributes.pagination);
-          paginationModel.set('categoryUri', reqObj.categoryUri);
+          var paginationModel = new Model.CategoryPaginationModel(itemResponse.get('pagination'));
+          paginationModel.set('categoryHref', reqObj.categoryHref);
 
           var paginationTopView = new View.CategoryPaginationView({
             model: paginationModel
@@ -98,10 +106,10 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
     });
 
     // pagination btn is clicked
-    EventBus.on('category.paginationBtnClicked', function (direction, uri) {
+    EventBus.on('category.paginationBtnClicked', function (direction, link) {
       ep.logger.info(direction + ' btn clicked.');
 
-      EventBus.trigger('category.reloadCategoryViewsRequest', uri);
+      EventBus.trigger('category.reloadCategoryViewsRequest', link);
 
     });
 
@@ -111,23 +119,8 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
       pace.stop();
     });
 
-    // Add to Cart
-    EventBus.on('category.addToCartBtnClicked', function (formDataObj) {
-      EventBus.trigger('category.submitAddToCartFormRequest', formDataObj);
-    });
-
-    EventBus.on('category.submitAddToCartFormRequest', function (formDataObj) {
-     submitAddToCartForm(formDataObj);
-    });
-
-    EventBus.on('category.loadDefaultCartRequest', function () {
-      var test = 'test';
-      // request cart data from Coretext
-      document.location.href = '/#mycart';
-      // render cart view in main nav
-    });
-
-    var submitAddToCartForm = function(formDataObj) {
+    /* ************** ADD TO CART EVENT LISTENER ***************** */
+    var submitAddToCartForm = function (formDataObj) {
       var formActionLink = formDataObj.actionLink;
       var qty = formDataObj.qty;
 
@@ -174,6 +167,16 @@ define(['app', 'ep', 'eventbus', 'ext.category.models', 'ext.category.views', 't
 
       }
     };
+
+    EventBus.on('category.addToCartBtnClicked', function (formDataObj) {
+      EventBus.trigger('category.submitAddToCartFormRequest', formDataObj);
+    });
+
+    EventBus.on('category.submitAddToCartFormRequest', submitAddToCartForm);
+
+    EventBus.on('category.loadDefaultCartRequest', function () {
+      ep.router.navigate(ep.app.config.routes.cart, true);
+    });
 
     return {
       DefaultView: defaultView
