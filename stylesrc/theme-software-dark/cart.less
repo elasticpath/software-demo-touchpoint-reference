@@ -33,10 +33,10 @@
 
     .itemdetail-availability-state{
         label{
-            // display: block;
+            display: block;
         }
 
-        .icon{
+        span.icon{
             display: block;
             width: 100%;
             margin-left: 0;
@@ -336,13 +336,15 @@
 
 .cart-sidebar{ // wraps cart summary + cart checkout --- applies bootstrap column classes
     .make-md-column(3);
+    // .make-sm-column(6);
     .make-xs-column(12);
 
     overflow: hidden;
 
     .cart-sidebar-inner{
         position: relative;
-        display: block;
+        display: inline-block;
+        width: auto;
         padding: 2rem;
         // border: 3px solid @brand-primary;
         // border-radius: 2px;
@@ -384,6 +386,11 @@ Purchase Confirmation
 
 .table-responsive{
     border: none;
+    table{
+        &.table{
+            background: transparent;
+        }
+    }
 }
 
 .cart-total-quantity{
