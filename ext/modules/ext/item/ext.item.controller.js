@@ -7,16 +7,16 @@
  *
  *
  */
-define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.views', 'text!modules/ext/item/ext.item.templates.html', 'text!modules/base/item/base.item.templates.html', 'i18n','pace'],
-  function($, ep, App, EventBus, Cortex, Model, View, template, baseTemplate, i18n,pace){
-
+define(['jquery','ep','app', 'eventbus', 'ext.item.models', 'ext.item.views', 'text!modules/base/item/base.item.templates.html','text!modules/ext/item/ext.item.templates.html','i18n','pace'],
+  function($, ep, App, EventBus, Model, View, template, extTemplate, i18n,pace){
 
     $('#TemplateContainer').append(template);
-    $('#TemplateContainer').append(baseTemplate);
+    $('#TemplateContainer').append(extTemplate);
 
     _.templateSettings.variable = 'E';
 
-    var defaultView = function(uri){
+
+    var defaultView = function(href){
       pace.start();
       var itemDetailLayout = new View.DefaultView({
         className: ''
@@ -25,11 +25,11 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
       var itemModel = new Model.ItemModel();
 
       itemModel.fetch({
-        url: itemModel.getUrl(uri),
+        url: itemModel.getUrl(href),
         success: function (response) {
 
           // Attribute List Collection
-          var attribsList = new Model.ItemAttributeCollection(response.attributes.details);
+          var attribsList = new Model.ItemAttributeCollection(response.get('details'));
 
           // Title View
           var titleView = new View.DefaultItemTitleView({
@@ -37,10 +37,8 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
           });
 
           // Asset Imge Url Processing
-          var urlVal = itemModel.attributes.asset.url;
-          var modelObject = {src: urlVal};
           var assetView = new View.DefaultItemAssetView({
-            model: new Backbone.Model(itemModel)
+            model: itemModel
           });
 
           // Attribute Title View
@@ -55,8 +53,8 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
           // Price View
           var priceView = new View.DefaultItemPriceView({
             model: new Backbone.Model({
-              price: response.attributes.price,
-              rateCollection: response.attributes.rateCollection
+              price: response.get('price'),
+              rateCollection: response.get('rateCollection')
             })
           });
           // Add To Cart View
@@ -71,7 +69,7 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
           itemDetailLayout.itemDetailPriceRegion.show(priceView);
           itemDetailLayout.itemDetailAddToCartRegion.show(addToCartView);
 
-          if (response.get('availability').state) {
+          if (response.get('availability') && response.get('availability').state) {
             // Availability View
             var availabilityView = new View.DefaultItemAvailabilityView({
               model: new Backbone.Model(response.get('availability'))
@@ -100,11 +98,10 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
     EventBus.on('item.loadDefaultCartRequest', function () {
       var test = 'test';
       // request cart data from Coretext
-      document.location.href = '/#mycart';
+      document.location.href = '#mycart';
       // render cart view in main nav
     });
     EventBus.on('item.addToCartBtnClicked', function (event) {
-
       var formActionLink = $(event.target).data('actionlink');
 
       if (formActionLink) {
@@ -114,22 +111,19 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
         if (qty > 0) {
 
           var obj = '{quantity:' + qty + '}';
-          // TODO improve robustness of oauth token when we work on that story
+          // FIXME improve robustness of oauth token when we work on that story
+          // FIXME use ajax model
           ep.io.ajax({
             type: 'POST',
             contentType: 'application/json',
             url: formActionLink,
             data: obj,
             success: function (response, x, y) {
-              // follow link response
-              ep.logger.info('Success posting to cart - go to cart view');
-
               // get the location header
-              ep.logger.info(response);
+//              ep.logger.info(response);
               // ep.logger.info(request);
               ep.logger.info(JSON.stringify(y));
               var lineItemUrl = y.getResponseHeader('Location');
-              ep.logger.info(lineItemUrl);
               if (lineItemUrl) {
                 EventBus.trigger('item.loadDefaultCartRequest');
               }
@@ -161,4 +155,3 @@ define(['jquery','ep','app', 'eventbus', 'cortex', 'ext.item.models', 'ext.item.
     };
   }
 );
-

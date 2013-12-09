@@ -6,10 +6,16 @@
  * Time: 1:32 PM
  *
  */
-define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
-  function (ep, i18n, EventBus, Mediator, pace, equalize) {
+define(function(require) {
+  var ep = require('ep')
+  var i18n = require('i18n');
+  var pace = require('pace');
+  var equalize = require('equalize');
+  var EventBus = require('eventbus');
+  var Backbone = require('backbone');
+  var Mediator = require('mediator');
 
-    var viewHelpers = {
+  var viewHelpers = {
       getI18nLabel: function (key) {
         // segmented localization e.g. page n of n not well handled
         // in future, needs to look into more elegant solution that
@@ -30,7 +36,7 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
           retVar = thumbnail.absolutePath;
         }
         else {
-          retVar = '/images/img-placeholder-noborder.png';
+          retVar = 'images/img-placeholder-noborder.png';
         }
         return retVar;
       },
@@ -101,10 +107,10 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
 
         return retVar;
       },
-      generateItemHref: function (uri) {
+      generateItemHref: function (href) {
         var retVar;
-        if (uri) {
-          retVar = ep.app.config.routes.itemDetail + '/' + ep.ui.encodeUri(uri);
+        if (href) {
+          retVar = ep.app.config.routes.itemDetail + '/' + ep.ui.encodeUri(href);
         } else {
           retVar = '';
           ep.logger.warn('[category browse]: unable to generate href to item-detail');
@@ -112,41 +118,38 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
 
         return retVar;
       },
-      generatePaginationLink: function(uri, pageUri) {
-        var href = '';
+      generatePaginationLink: function(href, pageHref) {
+        var html = '';
 
-        if (uri && pageUri) {
-          var link = ep.app.config.routes.category + '/' + ep.ui.encodeUri(uri) + '/' + ep.ui.encodeUri(pageUri);
-          href = 'href="' + link + '"';
+        if (href && pageHref) {
+          var link = ep.app.config.routes.category + '/' + ep.ui.encodeUri(href) + '/' + ep.ui.encodeUri(pageHref);
+          html = 'href="' + link + '"';
         }
 
-        return href;
+        return html;
       },
       checkForDisabledPaginationBtn: function (link) {
         if (!link) {
           return 'pagination-link-disabled';
         }
       },
-      checkForDisabledAddToCart:function(model){
-        if (!model.addtocart.actionlink){
-          return 'disabled="disabled"';
-        }
-      },
-      getCortexPath:function(){
-        return ep.app.config.cortexApi.path;
-      },
-      formatDate: function(releaseDateObj) {
-        var retVar = '';
-
-        if (releaseDateObj && releaseDateObj.value) {
-          var dateValue = releaseDateObj.value;
-          var dateObj = new Date(dateValue);
-          retVar = dateObj.toDateString();
-        }
-
-        return retVar;
+    checkForDisabledAddToCart: function (model) {
+      if (!model.addtocart.actionlink) {
+        return 'disabled="disabled"';
       }
-    };
+    },
+    formatDate: function (releaseDateObj) {
+      var retVar = '';
+
+      if (releaseDateObj && releaseDateObj.value) {
+        var dateValue = releaseDateObj.value;
+        var dateObj = new Date(dateValue);
+        retVar = dateObj.toDateString();
+      }
+
+      return retVar;
+    }
+  };
 
     /*
      * Default Layout View:
@@ -204,11 +207,11 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
       className: 'category-item-container',
       tagName: 'li',
       events: {
-        'click .item-addcart-button':function(event) {
+        'click .item-addcart-button': function (event) {
           event.preventDefault();
 
           var formDataObj = {
-            actionLink : $(event.currentTarget).data("actionlink"),
+            actionLink: $(event.currentTarget).data("actionlink"),
             qty: $('#item-select-quantity').val() || 0
           };
 
@@ -337,15 +340,14 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
           $('.category-item-thumbnail-container').equalHeights();
           $('.price-availability-wrapper').equalHeights();
         }
-        matchHeights();
-
         // hack:  resize not triggered properly when images load after initial execution of resize.
         // arbitrary delayed execution(s) help reset display grid.
         // This should instead get triggered after all images confirmed loaded... somehow...
-        setTimeout(function(){matchHeights();},200);
-        setTimeout(function(){matchHeights();},600);
+        setTimeout(function () {matchHeights();}, 200);
+        setTimeout(function () {matchHeights();}, 600);
 
 
+        matchHeights();
 
 
         // run height-matching function on window resize
@@ -354,7 +356,6 @@ define(['ep', 'i18n', 'eventbus', 'mediator', 'pace','equalize'],
             matchHeights();
           }
         );
-
 
       }
     });

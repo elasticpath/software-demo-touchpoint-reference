@@ -54,6 +54,17 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         return retVar;
       },
+      formatDate: function (releaseDateObj) {
+        var retVar = '';
+
+        if (releaseDateObj && releaseDateObj.value) {
+          var dateValue = releaseDateObj.value;
+          var dateObj = new Date(dateValue);
+          retVar = dateObj.toDateString();
+        }
+
+        return retVar;
+      },
       getListPrice: function (priceObj) {
         var retVar = '';
 
@@ -85,7 +96,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
           retVar = thumbnail.absolutePath;
         }
         else{
-          retVar = '/images/img-placeholder.png';
+         retVar = 'images/img-placeholder.png';
         }
         return retVar;
       },
@@ -99,10 +110,10 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         }
         return retVar;
       },
-      getItemUrl:function(uri){
+      getItemUrl:function(link){
         var retVar;
-        if (uri) {
-          retVar = ep.app.config.routes.itemDetail + '/' + ep.ui.encodeUri(uri);
+        if (link) {
+          retVar = ep.app.config.routes.itemDetail + '/' + ep.ui.encodeUri(link);
         } else {
           retVar = '';
           ep.logger.warn('[cart]: unable to generate href to item-detail');
@@ -110,18 +121,15 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         return retVar;
       },
-      getCortexPath:function(){
-        return ep.app.config.cortexApi.path;
-      },
       getCheckoutButtonDisabledAttrib:function(model){
         // complete purchase disabled by default
         var retVar = 'disabled="disabled"';
         // is user anonymous - return true
         if (!ep.app.isUserLoggedIn() && (model.cartTotalQuantity > 0)){
-          retVar = '';
+            retVar = '';
         }
         // user is logged in but may not have a submitorderaction link
-        else if(model.submitOrderActionUri){
+        else if(model.submitOrderActionLink){
           retVar = '';
         }
         return  retVar;
@@ -129,41 +137,53 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       },
       checkIfVisible:function(model){
         if (model.amount.display){
-          return null;
+         return null;
         }
         return 'is-hidden';
       },
-      formatDate: function(releaseDateObj) {
-        var retVar = '';
+      /**
+       * generate HTML markup for options inside a select of a given range
+       * @param min     minimum number of option range
+       * @param max     maximum number of option range
+       * @param quantity  initial selected quantity
+       * @returns {string}  options HTML markup of a given range
+       */
+      createQuantityOptions:function(min, max, quantity) {
+        var optionHtml = '';
+        var selected = '';
 
-        if (releaseDateObj && releaseDateObj.value) {
-          var dateValue = releaseDateObj.value;
-          var dateObj = new Date(dateValue);
-          retVar = dateObj.toDateString();
+        for (var i = min; i <= max; i++) {
+          // e.g. <option value="1" selcted="selected">1</option>
+          if (i === quantity) {
+            selected = 'selected="selected"';
+          } else {
+            selected = '';
+          }
+          optionHtml += '<option value="' + i + '"' + selected + ' >' + i + '</option>' ;
         }
 
-        return retVar;
+        return optionHtml;
       }
     };
 
     /*
-     * Functions
-     *
-     * */
+    * Functions
+    *
+    * */
     // Set Checkout Button to Processing State
     function setCheckoutButtonProcessing(){
-
-      $('.btn-cmd-checkout').html('<img src="/images/activity-indicator-strobe.gif" />');
+      $('.btn-cmd-submit-order').html('<img src="images/activity-indicator-strobe.gif" />');
 
     }
     // Set Checkout Button to Ready State
     function resetCheckoutButtonText(){
-      $('.btn-cmd-checkout').html(viewHelpers.getI18nLabel('cart.checkout'));
+      $('.btn-cmd-submit-order').html(viewHelpers.getI18nLabel('cart.submitOrder'));
     }
 
     // Default Layout
-    var defaultView = Backbone.Marionette.Layout.extend({
+    var defaultLayout = Backbone.Marionette.Layout.extend({
       template:'#DefaultCartLayoutTemplate',
+      templateHelpers:viewHelpers,
       className:'cart-container container',
       regions:{
         cartTitleRegion:'[data-region="cartTitleRegion"]',
@@ -172,13 +192,111 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       },
       onShow:function(){
         Mediator.fire('mediator.cart.DefaultViewRendered');
-
-
       }
     });
 
+
+
+
+
+
+    var cartCheckoutLayout = Backbone.Marionette.Layout.extend({
+      template:'#CartCheckoutLayoutTemplate',
+      templateHelpers:viewHelpers,
+      className:'cart-container container',
+      regions:{
+        cartCheckoutTitleRegion:'[data-region="cartCheckoutTitleRegion"]',
+        chosenBillingAddressRegion:'[data-region="chosenBillingAddressRegion"]',
+        cartCancelActionRegion:'[data-region="cartCancelActionRegion"]',
+        cartOrderSummaryRegion:'[data-region="cartOrderSummaryRegion"]'
+      }
+    });
+
+    // Cart Checkout Title View
+    var cartCheckoutTitleView = Backbone.Marionette.ItemView.extend({
+      template:'#CartCheckoutTitleTemplate',
+      templateHelpers:viewHelpers
+    });
+
+    /**
+     * Cart Billing Address View
+     * make mediator request to load an address view in region: billingAddressComponentRegion,
+     * will render a wrapper around an address view
+     * @type Marionette.Layout
+     */
+    var cartBillingAddressLayout = Backbone.Marionette.Layout.extend({
+      template: '#CartBillingAddressTemplate',
+      templateHelpers:viewHelpers,
+      regions: {
+        billingAddressComponentRegion: '[data-region="billingAddressComponentRegion"]'
+      },
+      onShow: function() {
+        // fire event to load the address itemView from component
+        Mediator.fire('mediator.loadAddressesViewRequest', {
+          region: this.billingAddressComponentRegion,
+          model: this.model
+        });
+      }
+    });
+
+    // Cart Checkout Cancel Action View
+    var cartCancelActionView = Backbone.Marionette.ItemView.extend({
+      template:'#CartCancelActionTemplate',
+      templateHelpers:viewHelpers,
+      events:{
+        'click .btn-cancel-order':function(event){
+          EventBus.trigger('cart.cancelOrderBtnClicked');
+        }
+      }
+    });
+
+    var cartOrderSummaryLayout = Backbone.Marionette.Layout.extend({
+      template:'#CartOrderSummaryTemplate',
+      regions: {
+        cartSummaryRegion: '[data-region="cartSummaryRegion"]',
+        cartTaxesRegion: '[data-region="cartTaxesRegion"]',
+        cartTotalRegion: '[data-region="cartTotalRegion"]',
+        cartSubmitOrderRegion: '[data-region="cartSubmitOrderRegion"]'
+      }
+    });
+
+    var cartTaxItemView = Backbone.Marionette.ItemView.extend({
+      template:'#CartTaxItemTemplate',
+      tagName:'li',
+      className:'cart-tax-item'
+    });
+
+    // Cart Taxes Composite View
+    var cartTaxesView = Backbone.Marionette.CompositeView.extend({
+      template:'#CartTaxesTemplate',
+      itemView:cartTaxItemView,
+      itemViewContainer:'ul > li > ul',
+      templateHelpers:viewHelpers
+    });
+
+    // Cart Total View
+    var cartTotalView = Backbone.Marionette.ItemView.extend({
+      template:'#CartTotalTemplate',
+      templateHelpers:viewHelpers
+    });
+
+    // Cart Checkout Submit Order View
+    var cartSubmitOrderActionView = Backbone.Marionette.ItemView.extend({
+      template:'#SubmitOrderActionTemplate',
+      templateHelpers:viewHelpers,
+      events:{
+        'click .btn-cmd-submit-order':function(event){
+          EventBus.trigger('cart.submitOrderBtnClicked',this.model.get('submitOrderActionLink'));
+        }
+      }
+    });
+
+
+
+
+
     // Cart Checkout Master View
-    var cartCheckoutMasterView = Backbone.Marionette.Layout.extend({
+    var cartCheckoutMasterLayout = Backbone.Marionette.Layout.extend({
       template:'#CartCheckoutMasterLayoutTemplate',
       regions:{
         cartSummaryRegion:'[data-region="cartSummaryRegion"]',
@@ -192,26 +310,35 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       templateHelpers:viewHelpers
     });
 
-    // Cart Line Item View
-    var cartLineItemView = Backbone.Marionette.ItemView.extend({
+    // Cart Line Item Layout
+    var cartLineItemLayout = Backbone.Marionette.Layout.extend({
       template:'#CartLineItemTemplate',
       tagName:'tr',
       templateHelpers:viewHelpers,
+      regions: {
+        cartLineitemAvailabilityRegion: '[data-region="cartLineitemAvailabilityRegion"]',
+        cartLineitemUnitPriceRegion: '[data-region="cartLineitemUnitPriceRegion"]',
+        cartLineitemTotalPriceRegion: '[data-region="cartLineitemTotalPriceRegion"]'
+      },
       events:{
         'click .btn-cart-removelineitem':function(event){
-          event.preventDefault();
-
           var actionLink = $(event.currentTarget).data("actionlink");
           EventBus.trigger('cart.removeLineItemBtnClicked', actionLink);
+        },
+
+        'change .cart-lineitem-quantity-select': function(event) {
+          var actionLink = this.model.get('lineitemLink');
+          var quantities = {
+            original: this.model.get('quantity'),
+            changeTo: $(event.target).val()
+          };
+          EventBus.trigger('cart.lineItemQuantityChanged', actionLink, quantities);
         }
       },
       onShow:function(){
         // show availability if at least has availability state
         if (this.model.get('availability').state) {
-          var availabilityRegion = new Backbone.Marionette.Region({
-            el: $('[data-region="cartLineitemAvailabilityRegion"]', this.el)
-          });
-          availabilityRegion.show(
+          this.cartLineitemAvailabilityRegion.show(
             new itemAvailabilityView({
               model: new Backbone.Model(this.model.get('availability'))
             })
@@ -219,10 +346,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         }
 
         // show unit price
-        var unitPriceRegion = new Backbone.Marionette.Region({
-          el: $('[data-region="cartLineitemUnitPriceRegion"]', this.el)
-        });
-        unitPriceRegion.show(
+        this.cartLineitemUnitPriceRegion.show(
           new itemUnitPriceLayout({
             model: new Backbone.Model({
               price: this.model.attributes.unitPrice,
@@ -232,10 +356,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         );
 
         // show total price
-        var totalPriceRegion = new Backbone.Marionette.Region({
-          el: $('[data-region="cartLineitemTotalPriceRegion"]', this.el)
-        });
-        totalPriceRegion.show(
+        this.cartLineitemTotalPriceRegion.show(
           new itemTotalPriceLayout({
             model: new Backbone.Model({
               price: this.model.attributes.price,
@@ -365,9 +486,9 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     // Main Cart View
     var mainCartView = Backbone.Marionette.CompositeView.extend({
       template:'#MainCartTemplate',
-      itemView:cartLineItemView,
+      itemView:cartLineItemLayout,
       itemViewContainer:'tbody',
-      className:'cart-main-inner',
+      className:'cart-main-inner table-responsive',
       templateHelpers:viewHelpers,
       onShow:function(){
         pace.stop();
@@ -386,31 +507,40 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       templateHelpers:viewHelpers,
       events:{
         'click .btn-cmd-checkout':function(event){
-          event.preventDefault();
-          EventBus.trigger('cart.checkoutBtnClicked',this.model);
+          EventBus.trigger('cart.checkoutBtnClicked',this.model.get('submitOrderActionLink'));
         }
       }
     });
 
-
-
-    // Activity Indicator View
-    var cartActivityIndicatorView = Backbone.Marionette.ItemView.extend({
-      template:'#CartActivityIndicatorTemplate'
-    });
+    /* ********* Helper functions ********* */
+    /**
+     * Reset a lineItem's quantity to original value recorded in model.
+     */
+    function resetQuantity(originalQty) {
+      $('[data-el-value="lineItem.quantity"] option[value="' + originalQty + '"]').prop('selected', true);
+    }
 
     return {
+      DefaultLayout:defaultLayout,
       CartTitleView:cartTitleView,
       MainCartView:mainCartView,
-      CartLineItemView:cartLineItemView,
+      CartLineItemLayout:cartLineItemLayout,
       EmptyCartView:emptyCartView,
       CartSummaryView:cartSummaryView,
       CartCheckoutActionView:cartCheckoutActionView,
-      DefaultView:defaultView,
-      CartCheckoutMasterView:cartCheckoutMasterView,
-      CartActivityIndicatorView:cartActivityIndicatorView,
+      CartCheckoutMasterLayout:cartCheckoutMasterLayout,
+      CartCheckoutLayout:cartCheckoutLayout,
+      CartCheckoutTitleView:cartCheckoutTitleView,
+      CartBillingAddressLayout:cartBillingAddressLayout,
+      CartCancelActionView:cartCancelActionView,
+      CartOrderSummaryLayout:cartOrderSummaryLayout,
+      CartTaxesView:cartTaxesView,
+      CartTaxItemView:cartTaxItemView,
+      CartTotalView:cartTotalView,
+      CartSubmitOrderActionView:cartSubmitOrderActionView,
       setCheckoutButtonProcessing:setCheckoutButtonProcessing,
-      resetCheckoutButtonText:resetCheckoutButtonText
+      resetCheckoutButtonText:resetCheckoutButtonText,
+      resetQuantity: resetQuantity
     };
   }
 );

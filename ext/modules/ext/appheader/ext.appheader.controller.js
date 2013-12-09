@@ -6,11 +6,11 @@
  * Time: 1:54 PM
  *
  */
-define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.views',  'text!modules/ext/appheader/ext.appheader.templates.html', 'text!modules/base/appheader/base.appheader.templates.html'],
-  function(ep, Mediator, App, EventBus, Model, View, template, baseTemplate){
+define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.views', 'text!modules/base/appheader/base.appheader.templates.html', 'text!modules/ext/appheader/ext.appheader.templates.html'],
+  function(ep, Mediator, App, EventBus, Model, View, template, extTemplate){
 
     $('#TemplateContainer').append(template);
-    $('#TemplateContainer').append(baseTemplate);
+    $('#TemplateContainer').append(extTemplate);
 
     _.templateSettings.variable = 'E';
 
@@ -40,7 +40,7 @@ define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.
         authMenuItemRegion:'[data-region="authMenuItemRegion"]'
       });
       var headerView = new View.PageHeaderView({
-        template: '#ExtAppHeaderDefaultTemplateContainer'
+          template: '#ExtAppHeaderDefaultTemplateContainer'
       });
 
       headerView.on('show',function(layout){
@@ -53,7 +53,7 @@ define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.
         // load main nav
         EventBus.trigger('layout.loadRegionContentRequest',{
           region:'mainNavRegion',
-          module:'ext.ia',
+          module:'ia',
           view:'MainNavView'
         });
         logoContainer = $('.logo-container');
@@ -98,7 +98,7 @@ define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.
     EventBus.on('appheader.loadLogoComponentRequest',function(){
       var logoView = new View.HeaderLogoView({
         model:new Model.LogoModel({
-          homeUri: '/',
+          homeUri: '',
           logoImgPath: 'images/elastic-path-logo.png'
         })
       });

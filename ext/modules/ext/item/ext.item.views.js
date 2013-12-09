@@ -8,7 +8,7 @@
  */
 define(['ep','marionette','i18n','eventbus','pace'],
   function(ep,Marionette,i18n,EventBus,pace){
-
+    //console.log('fuck:  ' + i18n);
     var viewHelpers = {
       getDisplayType:function(bHasChildren){
         if (bHasChildren){
@@ -60,6 +60,17 @@ define(['ep','marionette','i18n','eventbus','pace'],
 
         return retVar;
       },
+      formatDate: function (releaseDateObj) {
+        var retVar = '';
+
+        if (releaseDateObj && releaseDateObj.value) {
+          var dateValue = releaseDateObj.value;
+          var dateObj = new Date(dateValue);
+          retVar = dateObj.toDateString();
+        }
+
+        return retVar;
+      },
       getListPrice: function (priceObj) {
         var retVar = '';
 
@@ -86,27 +97,12 @@ define(['ep','marionette','i18n','eventbus','pace'],
         return retVar;
       },
       checkForDisabledAddToCart:function(model){
-
-        /*
-        *
-        * evaluate conditions where Add To Cart would be disabled
-        *
-        * - availability is NOT_AVAILABLE
-        * - there is no url in the addtocartaction link rel
-        *
-        * */
-
-//        if (model.availability === 'NOT_AVAILABLE'){
-//          return 'disabled="disabled"';
-//        }
         // only check for the action link on the form as the
         // determining whether the add to cart button should be active
           // check if add to cart is available
           if (!model.addtocart.actionlink){
             return 'disabled="disabled"';
           }
-
-
       },
       getDefaultImagePath:function(thumbnail){
         if (thumbnail && (thumbnail.length > 0)){
@@ -118,7 +114,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
           }
         }
         else{
-          return '/images/img-placeholder.png';
+          return 'images/img-placeholder.png';
         }
       },
       getDefaultImageName:function(thumbnail){
@@ -130,20 +126,6 @@ define(['ep','marionette','i18n','eventbus','pace'],
           retVar = this.getI18nLabel('itemDetail.noImgLabel');
         }
         return retVar;
-      },
-      getCortexPath:function(){
-        return ep.app.config.cortexApi.path;
-      },
-      formatDate: function(releaseDateObj) {
-        var retVar = '';
-
-        if (releaseDateObj && releaseDateObj.value) {
-          var dateValue = releaseDateObj.value;
-          var dateObj = new Date(dateValue);
-          retVar = dateObj.toDateString();
-        }
-
-        return retVar;
       }
     };
 
@@ -154,7 +136,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
         itemDetailTitleRegion:'[data-region="itemDetailTitleRegion"]',
         itemDetailAssetRegion:'[data-region="itemDetailAssetRegion"]',
         itemDetailAttrTitleRegion:'[data-region="itemDetailAttrTitleRegion"]',
-        itemDetailAttrContentRegion:'[data-region="itemDetailAttrContentRegion"]',
+        itemDetailAttrContentRegion: '[data-region="itemDetailAttrContentRegion"]',
         itemDetailPriceRegion:'[data-region="itemDetailPriceRegion"]',
         itemDetailAvailabilityRegion:'[data-region="itemDetailAvailabilityRegion"]',
         itemDetailQuantityRegion:'[data-region="itemDetailQuantityRegion"]',
@@ -178,28 +160,25 @@ define(['ep','marionette','i18n','eventbus','pace'],
       templateHelpers:viewHelpers
     });
 
-    // Extended Item Detail Tab Title View
-    var extItemDetailAttrTitleView = Backbone.Marionette.ItemView.extend({
-      template:'#ExtItemDetailAttrTitleTemplate',
-      tagName:'li'
+    // Default Attribute item View
+    var defaultItemAttributeView = Backbone.Marionette.ItemView.extend({
+      template:'#DefaultItemAttributeItemTemplate',
+      tagName:'tr'
     });
 
-    // Extended Item Detail Tab Title Collection View
-    var extItemDetailAttrTitleCollectionView = Backbone.Marionette.CollectionView.extend({
-      itemView:extItemDetailAttrTitleView,
-      tagName:'ul',
-      className:'nav nav-tabs',
-      onShow: function() {
-        $('.nav-tabs li').first().addClass('active');
-      }
+    // Default Attribute List View
+    var defaultItemAttributeListView = Backbone.Marionette.CollectionView.extend({
+      itemView:defaultItemAttributeView,
+      tagName:'table',
+      className:'table table-striped table-condensed'
     });
 
     // Extended Item Detail Tab Content View
     var extItemDetailAttrContentView = Backbone.Marionette.ItemView.extend({
-      template:'#ExtItemDetailAttrContentTemplate',
-      tagName:'div',
+      template: '#ExtItemDetailAttrContentTemplate',
+      tagName: 'div',
       className: 'tab-pane',
-      attributes: function() {
+      attributes: function () {
         return {
           id: this.model.attributes.attrKey
         }
@@ -208,13 +187,28 @@ define(['ep','marionette','i18n','eventbus','pace'],
 
     // Extended Item Detail Tab Content Collection View
     var extItemDetailAttrContentCollectionView = Backbone.Marionette.CollectionView.extend({
-      itemView:extItemDetailAttrContentView,
-      tagName:'div',
-      className:'tab-content',
-      onShow: function() {
+      itemView: extItemDetailAttrContentView,
+      tagName: 'div',
+      className: 'tab-content',
+      onShow: function () {
         $('.tab-content div').first().addClass('active');
       }
+    });
 
+      // Extended Item Detail Tab Title View
+    var extItemDetailAttrTitleView = Backbone.Marionette.ItemView.extend({
+      template: '#ExtItemDetailAttrTitleTemplate',
+      tagName: 'li'
+    });
+
+    // Extended Item Detail Tab Title Collection View
+    var extItemDetailAttrTitleCollectionView = Backbone.Marionette.CollectionView.extend({
+      itemView: extItemDetailAttrTitleView,
+      tagName: 'ul',
+      className: 'nav nav-tabs',
+      onShow: function () {
+        $('.nav-tabs li').first().addClass('active');
+      }
     });
 
     // Default Item Availability View
@@ -318,10 +312,6 @@ define(['ep','marionette','i18n','eventbus','pace'],
       ExtItemDetailAttrTitleCollectionView:extItemDetailAttrTitleCollectionView,
       ExtItemDetailAttrContentCollectionView:extItemDetailAttrContentCollectionView,
       getAddToCartQuantity:getAddToCartQuantity
-
-
-
-
     };
   }
 );
