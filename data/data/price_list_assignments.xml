@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<price_list_assignments>
+<price_list_assignment>
+    <guid>6FFCA5C0-7277-4E92-5427-110BDB02C8E6</guid>
+    <name>default</name>
+    <description>Base pricing for everyone in the US, no segmentation.</description>
+    <priority>5</priority>
+    <catalog_guid>SOFTWARE</catalog_guid>
+    <price_list_guid>761A885D-7DE5-9CA5-CDA1-BD0E8A24F769</price_list_guid>
+    <selling_context>
+        <guid>373202C0-3F98-64CF-9629-034C583DC52D</guid>
+        <name>SELLING_CONTEXT_NAME_null</name>
+        <description>SELLING_CONTEXT_DESCR_null</description>
+        <priority>0</priority>
+    </selling_context>
+</price_list_assignment>
+
+<price_list_assignment>
+    <guid>8A498850-BD4F-6E0E-94AB-C74896961B25</guid>
+    <name>default GBP</name>
+    <description>Base pricing for everyone in UK, no segmentation</description>
+    <priority>5</priority>
+    <catalog_guid>SOFTWARE</catalog_guid>
+    <price_list_guid>05960707-3FD4-0FA9-DA38-AFCF4D45E066</price_list_guid>
+    <selling_context>
+        <guid>F39833A2-1A61-51D6-FDDE-046F6DC4C06B</guid>
+        <name>SELLING_CONTEXT_NAME_null</name>
+        <description>SELLING_CONTEXT_DESCR_null</description>
+        <priority>0</priority>
+    </selling_context>
+</price_list_assignment>
+
+<price_list_assignment>
+    <guid>B2868BC7-4027-9A05-353E-71FBF1F6A5F0</guid>
+    <name>default CAD</name>
+    <description>Base pricing for everyone in CAD, no segmentation</description>
+    <priority>5</priority>
+    <catalog_guid>SOFTWARE</catalog_guid>
+    <price_list_guid>28D56E7E-13C4-A697-263A-9293A9560522</price_list_guid>
+    <selling_context>
+        <guid>8D95AC02-EE55-0D66-17A1-EF9C5547A697</guid>
+        <name>SELLING_CONTEXT_NAME_null</name>
+        <description>SELLING_CONTEXT_DESCR_null</description>
+        <priority>0</priority>
+    </selling_context>
+</price_list_assignment>
+</price_list_assignments>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<warehouses>
+<warehouse code="SOFTWARE">
+    <name>ElasticPath Warehouse</name>
+    <pick_delay>20</pick_delay>
+    <street1>300-455 Granville Street</street1>
+    <street2></street2>
+    <city>Vancouver</city>
+    <sub_country>BC</sub_country>
+    <zip_postal_code>V6C 1T1</zip_postal_code>
+    <country>CA</country>
+</warehouse>
+</warehouses>

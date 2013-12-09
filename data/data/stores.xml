@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<stores>
+<store code="SOFTWARE" enabled="true">
+    <globalization timeZone="America/Vancouver" country="CA" sub_country="BC" content_encoding="UTF-8" default_locale="en" default_currency="USD"/>
+    <url>http://ep-pd-demo.elasticpath.net:8080/storefront</url>
+    <name>ElasticPath</name>
+    <state>200</state>
+    <type>B2B</type>
+    <description></description>
+    <catalog>SOFTWARE</catalog>
+    <display_out_of_stock>true</display_out_of_stock>
+    <email_sender_name>Samantha.Rivera@elasticpath.com</email_sender_name>
+    <email_sender_address>Samantha.Rivera@elasticpath.com</email_sender_address>
+    <store_admin_email>Samantha.Rivera@elasticpath.com</store_admin_email>
+    <credit_card_cvv2_enabled>true</credit_card_cvv2_enabled>
+    <store_full_credit_cards>false</store_full_credit_cards>
+    <locales>
+        <locale>fr</locale>
+        <locale>en</locale>
+    </locales>
+    <currencies>
+        <currency>GBP</currency>
+        <currency>CAD</currency>
+        <currency>USD</currency>
+    </currencies>
+    <warehouses>
+        <warehouse>SOFTWARE</warehouse>
+    </warehouses>
+    <tax_codes>
+        <guid>501</guid>
+        <guid>502</guid>
+        <guid>500</guid>
+    </tax_codes>
+    <tax_jurisdictions/>
+    <payment_gateways>
+        <gateway>cybersourcetoken</gateway>
+    </payment_gateways>
+    <credit_card_types>
+        <type>American Express</type>
+        <type>Visa</type>
+        <type>MasterCard</type>
+    </credit_card_types>
+</store>
+</stores>

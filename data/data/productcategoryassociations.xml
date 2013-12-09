@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<productcategoryassociations>
+<product code="NAV222TR">
+    <catalog code="SOFTWARE">
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV333TR">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV444TR">
+    <catalog code="SOFTWARE">
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="N360">
+    <catalog code="SOFTWARE">
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>1</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV444">
+    <catalog code="SOFTWARE">
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>2</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NGH112TR">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBAMB11">
+    <catalog code="SOFTWARE">
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBEMS111">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBRAN111">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="BKUP">
+    <catalog code="SOFTWARE">
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="BKUP360">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="N360REN">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Renewal">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NL1PC">
+    <catalog code="SOFTWARE">
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="BKUPGH">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV111">
+    <catalog code="SOFTWARE">
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV333">
+    <catalog code="SOFTWARE">
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="va_standard_subscription">
+    <catalog code="SOFTWARE">
+        <category code="Subscriptions">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="va_professional_subscription">
+    <catalog code="SOFTWARE">
+        <category code="Subscriptions">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAT231">
+    <catalog code="SOFTWARE">
+        <category code="Products">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NIS983">
+    <catalog code="SOFTWARE">
+        <category code="Products">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NAV111TR">
+    <catalog code="SOFTWARE">
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBRAN111TR">
+    <catalog code="SOFTWARE">
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBAMB111">
+    <catalog code="SOFTWARE">
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>1</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="TIBEMS111TR">
+    <catalog code="SOFTWARE">
+        <category code="infrastructure_software">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Trials">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+
+<product code="NGH112">
+    <catalog code="SOFTWARE">
+        <category code="security_anti_virus">
+            <default>true</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="All">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+        <category code="Products">
+            <default>false</default>
+            <featuredorder>0</featuredorder>
+        </category>
+    </catalog>
+</product>
+</productcategoryassociations>

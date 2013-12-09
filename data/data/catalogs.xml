@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogs>
+<catalog>
+    <code>SOFTWARE</code>
+    <type>master</type>
+    <name>Software Catalog</name>
+    <languages>
+        <language>fr</language>
+        <language>en</language>
+    </languages>
+    <defaultlanguage>en</defaultlanguage>
+    <attributes>
+        <attribute>
+            <key>EULA</key>
+            <name>EULA</name>
+            <usage>SKU</usage>
+            <type>File</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>operatingsystem</key>
+            <name>Operating System</name>
+            <usage>SKU</usage>
+            <type>ShortText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>system_requirements</key>
+            <name>System Requirements</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>longDesc</key>
+            <name>Details</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>true</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>benefits</key>
+            <name>Benefits</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>whatsnew</key>
+            <name>What's New</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>features</key>
+            <name>Features</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>multiuserlicense</key>
+            <name>Multi-User License</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>CatDescription</key>
+            <name>Category Description</name>
+            <usage>Category</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>shortDesc</key>
+            <name>Short Description</name>
+            <usage>Product</usage>
+            <type>ShortText</type>
+            <multilanguage>true</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>bannerName</key>
+            <name>Banner Name</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>true</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+        <attribute>
+            <key>OS</key>
+            <name>Operating System</name>
+            <usage>Product</usage>
+            <type>LongText</type>
+            <multilanguage>false</multilanguage>
+            <required>false</required>
+            <multivalue>false</multivalue>
+            <global>false</global>
+        </attribute>
+    </attributes>
+    <categorytypes>
+        <categorytype>
+            <guid>d744ecc4-4904-4db1-a5b1-48573dd92ac8</guid>
+            <name>ELASTICPATH</name>
+            <template>categoryTemplate</template>
+            <assignedattributes>
+                <attributekey>CatDescription</attributekey>
+            </assignedattributes>
+        </categorytype>
+    </categorytypes>
+    <producttypes>
+        <producttype>
+            <guid>d47c09c3-c30a-4f6f-8b5a-4ef9ca75e661</guid>
+            <name>elasticpath</name>
+            <template>guidedSkuTemplate</template>
+            <assignedattributes/>
+            <defaulttaxcode>NONE</defaulttaxcode>
+            <multisku>
+                <assignedskuoptions>
+                    <skuoption>PLATFORM</skuoption>
+                </assignedskuoptions>
+                <assignedattributes>
+                    <attributekey>EULA</attributekey>
+                </assignedattributes>
+            </multisku>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>864d939a-bbdd-44a3-90e7-3824bac77c3f</guid>
+            <name>media</name>
+            <template>productTemplate</template>
+            <assignedattributes>
+                <attributekey>longDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>GOODS</defaulttaxcode>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>95c778ad-aeb3-41fd-90b9-89dd36b19c6b</guid>
+            <name>service</name>
+            <template>productTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>longDesc</attributekey>
+                <attributekey>shortDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>NONE</defaulttaxcode>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>db089c3c-ee44-474f-bdd8-172c1e998edf</guid>
+            <name>upgrade</name>
+            <template>productTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>whatsnew</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>multiuserlicense</attributekey>
+                <attributekey>longDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>NONE</defaulttaxcode>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>20ca6ad0-4d5f-434a-bcbf-b33113ac6ae3</guid>
+            <name>product</name>
+            <template>guidedSkuTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>whatsnew</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>multiuserlicense</attributekey>
+                <attributekey>longDesc</attributekey>
+                <attributekey>bannerName</attributekey>
+                <attributekey>shortDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>GOODS</defaulttaxcode>
+            <multisku>
+                <assignedskuoptions>
+                    <skuoption>Type</skuoption>
+                </assignedskuoptions>
+                <assignedattributes>
+                    <attributekey>operatingsystem</attributekey>
+                    <attributekey>EULA</attributekey>
+                </assignedattributes>
+            </multisku>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>59081d6e-f887-4d8c-9373-b5ad8cc22908</guid>
+            <name>trial</name>
+            <template>productTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>longDesc</attributekey>
+                <attributekey>shortDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>GOODS</defaulttaxcode>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>d93af42d-8862-4719-984c-58f24e4bbb3e</guid>
+            <name>renewal</name>
+            <template>productRenewalTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>whatsnew</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>multiuserlicense</attributekey>
+                <attributekey>longDesc</attributekey>
+                <attributekey>shortDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>NONE</defaulttaxcode>
+            <multisku>
+                <assignedskuoptions>
+                    <skuoption>Type</skuoption>
+                </assignedskuoptions>
+                <assignedattributes>
+                    <attributekey>operatingsystem</attributekey>
+                    <attributekey>EULA</attributekey>
+                </assignedattributes>
+            </multisku>
+            <nodiscount>false</nodiscount>
+        </producttype>
+        <producttype>
+            <guid>5b3bef76-3ac4-4233-b879-d6af18e59e69</guid>
+            <name>subscription</name>
+            <template>productTemplate</template>
+            <assignedattributes>
+                <attributekey>features</attributekey>
+                <attributekey>OS</attributekey>
+                <attributekey>benefits</attributekey>
+                <attributekey>system_requirements</attributekey>
+                <attributekey>longDesc</attributekey>
+                <attributekey>shortDesc</attributekey>
+            </assignedattributes>
+            <defaulttaxcode>NONE</defaulttaxcode>
+            <multisku>
+                <assignedskuoptions>
+                    <skuoption>ContractLength</skuoption>
+                    <skuoption>Seats</skuoption>
+                </assignedskuoptions>
+                <assignedattributes>
+                    <attributekey>EULA</attributekey>
+                </assignedattributes>
+            </multisku>
+            <nodiscount>false</nodiscount>
+        </producttype>
+    </producttypes>
+    <skuoptions>
+        <skuoption>
+            <code>PLATFORM</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">Platform</value>
+            </name>
+            <skuoptionvalues>
+                <skuoptionvalue>
+                    <code>WINDOWS</code>
+                    <name>
+                        <value language="fr">Windows</value>
+                        <value language="en">Windows</value>
+                    </name>
+                    <image>ico-win-med.png</image>
+                    <ordering>10</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>MACOSX</code>
+                    <name>
+                        <value language="fr">Mac OS X</value>
+                        <value language="en">Mac OS X</value>
+                    </name>
+                    <image>ico-mac-med.png</image>
+                    <ordering>20</ordering>
+                </skuoptionvalue>
+            </skuoptionvalues>
+        </skuoption>
+        <skuoption>
+            <code>Type</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">Type</value>
+            </name>
+            <skuoptionvalues>
+                <skuoptionvalue>
+                    <code>Enterprise</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Enterprise</value>
+                    </name>
+                    <ordering>80</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>5user</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">5-User Pack</value>
+                    </name>
+                    <ordering>50</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>Upgrade</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Upgrade</value>
+                    </name>
+                    <ordering>20</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>1year</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">1 Year/3 PCs</value>
+                    </name>
+                    <ordering>30</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>3pc</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Up to 3 PCs</value>
+                    </name>
+                    <ordering>70</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>Full</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Full</value>
+                    </name>
+                    <ordering>10</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>1pc</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Protection for 1 PC</value>
+                    </name>
+                    <ordering>60</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>2year</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">2 Year/3 PCs</value>
+                    </name>
+                    <ordering>40</ordering>
+                </skuoptionvalue>
+            </skuoptionvalues>
+        </skuoption>
+        <skuoption>
+            <code>ContractLength</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">Contract Term</value>
+            </name>
+            <skuoptionvalues>
+                <skuoptionvalue>
+                    <code>1yr</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">One Year</value>
+                    </name>
+                    <ordering>20</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>perpetuity</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">Monthly</value>
+                    </name>
+                    <ordering>10</ordering>
+                </skuoptionvalue>
+            </skuoptionvalues>
+        </skuoption>
+        <skuoption>
+            <code>Seats</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">No. Seats</value>
+            </name>
+            <skuoptionvalues>
+                <skuoptionvalue>
+                    <code>3seats</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">3 Seats</value>
+                    </name>
+                    <ordering>30</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>1</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">1 Seat</value>
+                    </name>
+                    <ordering>10</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>5seats</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">5 Seats</value>
+                    </name>
+                    <ordering>50</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>4seats</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">4 Seats</value>
+                    </name>
+                    <ordering>40</ordering>
+                </skuoptionvalue>
+                <skuoptionvalue>
+                    <code>2seats</code>
+                    <name>
+                        <value language="fr"/>
+                        <value language="en">2 Seats</value>
+                    </name>
+                    <ordering>20</ordering>
+                </skuoptionvalue>
+            </skuoptionvalues>
+        </skuoption>
+    </skuoptions>
+    <brands>
+        <brand>
+            <code>ELASTICPATH</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">ElasticPath Software</value>
+            </name>
+            <image>elastic-path-logo.jpg</image>
+        </brand>
+        <brand>
+            <code>Tibco</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">TIBCO</value>
+            </name>
+            <image>tibco-logo.png</image>
+        </brand>
+        <brand>
+            <code>Norton</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">Norton</value>
+            </name>
+            <image>Norton_logo.gif</image>
+        </brand>
+        <brand>
+            <code>Symantec</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">Symantec</value>
+            </name>
+        </brand>
+        <brand>
+            <code>SAS</code>
+            <name>
+                <value language="fr"/>
+                <value language="en">SAS</value>
+            </name>
+            <image>SAS_TPTK_logo.gif</image>
+        </brand>
+    </brands>
+</catalog>
+</catalogs>
