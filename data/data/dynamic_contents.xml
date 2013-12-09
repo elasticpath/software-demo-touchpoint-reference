@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dynamic_contents>
+<dynamiccontent guid="A472ABD3-8EC6-778D-FDB3-3756B17A1E61">
+    <name>Default homepage product carousel</name>
+    <description>Featured product carousel</description>
+    <contentwrapperid>productCarousel</contentwrapperid>
+    <parametervalues>
+        <parametervalue guid="7575A018-89CE-BFF0-12A0-D7B2599E1D5A">
+            <parametername>productCode1</parametername>
+            <localizable>false</localizable>
+            <values>
+                <value language="null-value">N360</value>
+            </values>
+        </parametervalue>
+        <parametervalue guid="6260DF05-ACA1-4A96-CA22-E57E42DB66D1">
+            <parametername>productCode2</parametername>
+            <localizable>false</localizable>
+            <values>
+                <value language="null-value">NAV111</value>
+            </values>
+        </parametervalue>
+        <parametervalue guid="D0FF8DFC-66DD-1177-B009-B5C88BEAA115">
+            <parametername>productCode3</parametername>
+            <localizable>false</localizable>
+            <values>
+                <value language="null-value">NAV333</value>
+            </values>
+        </parametervalue>
+    </parametervalues>
+</dynamiccontent>
+
+<dynamiccontent guid="035471D2-947E-542C-919A-C09C256E0C8D">
+    <name>Default homepage news &amp; updates</name>
+    <description>Latest site news and updates</description>
+    <contentwrapperid>HTMLWrapper</contentwrapperid>
+    <parametervalues>
+        <parametervalue guid="85ECB585-C800-7F84-00F8-B403705BA818">
+            <parametername>HTML</parametername>
+            <localizable>true</localizable>
+            <values>
+                <value language="en">&lt;div class=&quot;bottomContent&quot;&gt; 	&lt;h4&gt;Latest Software News&lt;/h4&gt;         &lt;!-- article starts here --&gt;         &lt;div class=&quot;article&quot;&gt; 		&lt;img alt=&quot;&quot; src=&quot;template-resources/images/bottom_article_img_1.jpg&quot;&gt; 		&lt;h5&gt;News Story Title&lt;/h5&gt;                 &lt;p&gt;Lorem ipsum dolor sit amet                      consectetur adipisicing elitsed                      do eiusmod tempor.&lt;/p&gt; 		&lt;a class=&quot;fullStoryBtn&quot; href=&quot;#&quot;&gt;Full Story&lt;/a&gt; 	&lt;/div&gt; 	&lt;!-- article ends here --&gt; 	&lt;!-- article starts here --&gt; 	&lt;div class=&quot;article&quot;&gt; 		&lt;img alt=&quot;&quot; src=&quot;template-resources/images/bottom_article_img_2.jpg&quot;&gt; 		&lt;h5&gt;News Story Title&lt;/h5&gt; 		&lt;p&gt;Lorem ipsum dolor sit amet                      consectetur adipisicing elitsed                      do eiusmod tempor.&lt;/p&gt;                     &lt;a class=&quot;fullStoryBtn&quot; href=&quot;#&quot;&gt;Full Story&lt;/a&gt; 	&lt;/div&gt; 	&lt;!-- article ends here --&gt; 	&lt;!-- article starts here --&gt; 	&lt;div class=&quot;article articleLast&quot;&gt; 		&lt;img alt=&quot;&quot; src=&quot;template-resources/images/bottom_article_img_3.jpg&quot;&gt; 		&lt;h5&gt;News Story Title&lt;/h5&gt; 		&lt;p&gt;Lorem ipsum dolor sit amet                      consectetur adipisicing elitsed                      do eiusmod tempor.&lt;/p&gt;                     &lt;a class=&quot;fullStoryBtn&quot; href=&quot;#&quot;&gt;Full Story&lt;/a&gt; 	&lt;/div&gt; 	&lt;!-- article ends here --&gt; &lt;/div&gt;</value>
+            </values>
+        </parametervalue>
+    </parametervalues>
+</dynamiccontent>
+</dynamic_contents>

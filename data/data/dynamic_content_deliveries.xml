@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dynamic_content_deliveries>
+<dynamic_content_delivery>
+    <name>Default homepage product carousel content delivery</name>
+    <guid>324B5436-9124-52ED-7788-DC1C365D14B7</guid>
+    <priority>10</priority>
+    <dynamiccontent_guid>A472ABD3-8EC6-778D-FDB3-3756B17A1E61</dynamiccontent_guid>
+    <contentspaces>
+        <contentspace_guid>48059AD0-4221-0B0F-C7AE-A3AD61913739</contentspace_guid>
+    </contentspaces>
+    <selling_context>
+        <guid>A0F1360D-4979-8025-B6FB-5B2B8D2A3922</guid>
+        <name>SELLING_CONTEXT_NAME_null</name>
+        <description>SELLING_CONTEXT_DESCR_null</description>
+        <priority>0</priority>
+        <conditions>
+            <condition>
+                <guid>B1BEB778-36B1-BC02-1C8A-BCD2B6147CA1</guid>
+                <name>1362700037423257000</name>
+                <condition_string> { OR { SELLING_CHANNEL.equalTo 'SOFTWARE' }  } </condition_string>
+                <dictionary_guid>STORES</dictionary_guid>
+            </condition>
+        </conditions>
+    </selling_context>
+</dynamic_content_delivery>
+
+<dynamic_content_delivery>
+    <name>Default homepage featured news &amp; updates content delivery</name>
+    <guid>B9EE3A74-DEF9-1083-D505-98E9EF2D3890</guid>
+    <priority>10</priority>
+    <dynamiccontent_guid>035471D2-947E-542C-919A-C09C256E0C8D</dynamiccontent_guid>
+    <contentspaces>
+        <contentspace_guid>340FCB9C-3983-B726-C30B-71CC455575DE</contentspace_guid>
+    </contentspaces>
+    <selling_context>
+        <guid>77ABEC51-CB06-C698-DE61-39F866373342</guid>
+        <name>SELLING_CONTEXT_NAME_null</name>
+        <description>SELLING_CONTEXT_DESCR_null</description>
+        <priority>0</priority>
+        <conditions>
+            <condition>
+                <guid>DDEE4112-2FBE-272B-DE1E-67ADCD10A39E</guid>
+                <name>1363129141688760000</name>
+                <condition_string> { OR { SELLING_CHANNEL.equalTo 'SOFTWARE' }  } </condition_string>
+                <dictionary_guid>STORES</dictionary_guid>
+            </condition>
+        </conditions>
+    </selling_context>
+</dynamic_content_delivery>
+</dynamic_content_deliveries>
