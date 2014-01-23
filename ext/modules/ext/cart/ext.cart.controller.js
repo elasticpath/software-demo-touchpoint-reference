@@ -1,24 +1,20 @@
 /**
- * Copyright Elastic Path Software 2013.
-
- * User: sbrookes
- * Date: 04/04/13
- * Time: 9:16 AM
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
  *
- *
+ * Storefront - Cart Controller
  */
 
 define(function (require) {
-    var ep = require('ep'),
-      EventBus = require('eventbus'),
-      Mediator = require('mediator'),
-      pace = require('pace'),
-      i18n = require('i18n'),
+    var ep = require('ep');
+    var EventBus = require('eventbus');
+    var Mediator = require('mediator');
+    var pace = require('pace');
+    var i18n = require('i18n');
 
-      Model = require('cart.models'),
-      View = require('ext.cart.views'),
-      template = require('text!modules/base/cart/base.cart.templates.html'),
-      extTemplate = require('text!modules/ext/cart/ext.cart.templates.html');
+    var Model = require('cart.models');
+    var View = require('ext.cart.views');
+    var template = require('text!modules/base/cart/base.cart.templates.html');
+    var extTemplate = require('text!modules/ext/cart/ext.cart.templates.html');
 
 
     pace.start();
@@ -28,34 +24,49 @@ define(function (require) {
 
     _.templateSettings.variable = 'E';
 
+    // Instantiate a cart DefaultLayout view
+    var cartLayout = new View.DefaultLayout({
+      template:'#ExtDefaultCartLayoutTemplate'
+    });
 
+    /**
+     * Instantiate the cart model and item collection here so they can be modified
+     * by the EventBus event handlers when the items in the cart are changed.
+     */
+    var cartModel = new Model.CartModel();
+    var cartItemCollection = new Model.CartItemCollection();
+
+    /**
+     * Loads views into corresponding regions of the DefaultLayout view.
+     * @returns {View.DefaultLayout} fully rendered cart DefaultLayout
+     */
     var defaultView = function () {
       pace.start();
-      var cartLayout = new View.DefaultLayout({
-          template:'#ExtDefaultCartLayoutTemplate'
-      });
-      var cartModel = new Model.CartModel();
 
       cartModel.fetch({
         success: function (response) {
+          // Populate the cart item collection with the line items parsed in the cart model
+          cartItemCollection = new Model.CartItemCollection(response.get('lineItems'));
 
-          var summaryView = new View.CartSummaryView({
-            model: cartModel
-          });
-
-          // collection (attributes.lineitems) coming from parse method of cartModel
           var mainCartView = new View.MainCartView({
-            collection: new Model.CartItemCollection(response.attributes.lineItems)
+            collection: cartItemCollection
           });
 
           cartLayout.cartTitleRegion.show(new View.CartTitleView());
           var cartCheckoutMasterLayout = new View.CartCheckoutMasterLayout();
           cartCheckoutMasterLayout.on('show', function () {
-            cartCheckoutMasterLayout.cartSummaryRegion.show(summaryView);
-            cartCheckoutMasterLayout.cartCheckoutActionRegion.show(new View.CartCheckoutActionView({
-              model: cartModel
-            }));
+            cartCheckoutMasterLayout.cartSummaryRegion.show(
+              new View.CartSummaryView({
+                model: cartModel
+              })
+            );
+            cartCheckoutMasterLayout.cartCheckoutActionRegion.show(
+              new View.CartCheckoutActionView({
+                model: cartModel
+              })
+            );
           });
+
           cartLayout.cartCheckoutMasterRegion.show(cartCheckoutMasterLayout);
 
           if (response.attributes.lineItems.length > 0) {
@@ -72,68 +83,9 @@ define(function (require) {
       return cartLayout;
     };
 
-    /*
-     * Checkout View
-     */
-    var checkoutView = function() {
-      pace.start();
-      var checkoutLayout = new View.CartCheckoutLayout();
-      var cartModel = new Model.CartModel();
-
-      cartModel.fetch({
-        success: function (response) {
-          checkoutLayout.cartCheckoutTitleRegion.show(new View.CartCheckoutTitleView());
-
-          checkoutLayout.chosenBillingAddressRegion.show(new View.CartBillingAddressLayout({
-            model: new Backbone.Model(cartModel.get('billingAddresses').chosenBillingAddress)
-          }));
-
-          checkoutLayout.cartCancelActionRegion.show(new View.CartCancelActionView({
-            model: cartModel
-          }));
-
-          var cartOrderSummaryLayout = new View.CartOrderSummaryLayout();
-          cartOrderSummaryLayout.on('show', function () {
-            cartOrderSummaryLayout.cartSummaryRegion.show(
-              new View.CartSummaryView({
-                model: cartModel
-              })
-            );
-
-            // Show any taxes in the cart tax array
-            if (cartModel.get('cartTaxes').length) {
-              cartOrderSummaryLayout.cartTaxesRegion.show(
-                new View.CartTaxesView({
-                  collection: new Backbone.Collection(cartModel.get('cartTaxes'))
-                })
-              );
-            }
-
-            cartOrderSummaryLayout.cartTotalRegion.show(
-              new View.CartTotalView({
-                model: cartModel
-              })
-            );
-
-            cartOrderSummaryLayout.cartSubmitOrderRegion.show(
-              new View.CartSubmitOrderActionView({
-                model: cartModel
-              })
-            );
-          });
-          checkoutLayout.cartOrderSummaryRegion.show(cartOrderSummaryLayout);
-        },
-        error: function (response) {
-          ep.logger.error('error fetching my cart model: ' + response);
-        }
-      });
-
-
-
-      return checkoutLayout;
-    };
 
     /* ************** EVENT LISTENER FUNCTIONS ***************** */
+    // FIXME [CU-184] global notification center
     /**
      * A sticky (will not disappear on itself) toast error message
      * @param errMsg Error message to display on toast message
@@ -215,7 +167,7 @@ define(function (require) {
      */
     var cartView = {
       region: 'appMainRegion',
-      module: 'ext.cart',
+      module: 'cart',
       view: 'DefaultView'
     };
 
@@ -247,7 +199,7 @@ define(function (require) {
      * Listening to update lineItem quantity failed signal(reason: lineItem deleted),
      * will make request to load cart view, and display error message after page refresh.
      */
-      // FIXME decouple specific callback from event (set a flag which is processed regardless how/when the page is reloaded)
+      // FIXME [CU-184] decouple specific callback from event (set a flag which is processed regardless how/when the page is reloaded)
     EventBus.on('cart.updateLineItemQtyFailed.ItemDeleted', function () {
       var cartViewWithCallBack = _.extend({callback: itemDeletedErrMsg}, cartView);
 
@@ -267,30 +219,39 @@ define(function (require) {
       stickyErrMsg(i18n.t('cart.genericUpdateErrMsg'));
     });
 
-    /* ********** EVENT LISTENERS ************ */
-    /**
-     * Listening to requests to reload cartView,
-     * will reload the entire cartView.
-     */
-    EventBus.on('cart.reloadCartViewRequest', function () {
-      // FIXME: finer refresh to reload just the necessary parts
-      EventBus.trigger('layout.loadRegionContentRequest', cartView);
-    });
-
-    // Remove Line Item Success
+    /* ********** Remove line item EVENT LISTENERS ********** */
+    // On successful removal of line item, trigger a fetch of the cart model and update the cart item collection.
+    // The checkout summary view will be updated separately by model change listeners on the view.
     EventBus.on('cart.removeLineItemSuccess', function () {
-      // EventBus.trigger('cart.DisplayCartLineItemRemovedSuccessMsg');
-      EventBus.trigger('cart.reloadCartViewRequest');
+      cartModel.fetch({
+
+        success: function(response) {
+          // Update the collection of cart item products with the new array of line items from the cart model
+          var newCartLineItems = response.get('lineItems');
+
+          cartItemCollection.update(newCartLineItems);
+
+          if (newCartLineItems.length === 0 && cartLayout.mainCartRegion) {
+            cartLayout.mainCartRegion.show(new View.EmptyCartView());
+          }
+
+          // Stop the activity indicators on the cart regions that are being updated
+          ep.ui.stopActivityIndicator(cartLayout.mainCartRegion.currentView);
+          ep.ui.stopActivityIndicator(cartLayout.cartCheckoutMasterRegion.currentView);
+        }
+      });
     });
 
-    // Remove Line Item Failed
+    // Logs an error when the request to remove a line item fails and stops the relevant activity indicators.
     EventBus.on('cart.removeLineItemFailed', function (response) {
+      ep.ui.stopActivityIndicator(cartLayout.mainCartRegion.currentView);
+      ep.ui.stopActivityIndicator(cartLayout.cartCheckoutMasterRegion.currentView);
       // should use the toastMsg to inform user
       ep.logger.error('error deleting lineItem from cart: ' + response);
     });
 
     // Remove Line Item Request
-    // FIXME move logic to a method
+    // FIXME [CU-195] move logic to a method
     EventBus.on('cart.removeLineItemRequest', function (deleteActionLink) {
       var ajaxModel = new ep.io.defaultAjaxModel({
         type: 'DELETE',
@@ -306,82 +267,42 @@ define(function (require) {
       ep.io.ajax(ajaxModel.toJSON());
     });
 
-    // Remove Line Item Button Clicked
+    /**
+     * Prompts the user to confirm deletion with a JavaScript confirmation alert and then
+     * starts activity indicators on those cart regions that contain data which could
+     * change following a successful cart item deletion.
+     */
     EventBus.on('cart.removeLineItemBtnClicked', function (actionLink) {
       var confirmation = window.confirm("Do you really want to delete this item");
       if (confirmation) {
+        ep.ui.startActivityIndicator(cartLayout.mainCartRegion.currentView);
+        ep.ui.startActivityIndicator(cartLayout.cartCheckoutMasterRegion.currentView);
         EventBus.trigger('cart.removeLineItemRequest', actionLink);
       }
     });
 
-    // Submit Order Button Clicked
-    EventBus.on('cart.submitOrderBtnClicked', function (submitOrderActionLink) {
-      View.setCheckoutButtonProcessing();
-      // if cortex says it's ok
-      if (submitOrderActionLink) {
-        EventBus.trigger('cart.submitOrderRequest', submitOrderActionLink);
-      }
+    /**
+     * Listening to requests to reload cartView,
+     * will reload the entire cartView.
+     */
+    EventBus.on('cart.reloadCartViewRequest', function () {
+      // FIXME: [CU-93] finer refresh to reload just the necessary parts
+      ep.router.controller.cart();
     });
 
     // Proceed to checkout button checks if the user is logged in and loads the checkout summary
-    EventBus.on('cart.checkoutBtnClicked', function() {
+    EventBus.on('cart.checkoutBtnClicked', function(checkoutLink) {
       // User not logged in and config set to require login
       if (ep.app.config.requireAuthToCheckout && (!ep.app.isUserLoggedIn())) {
         // Fire event to get authenticated (e.g. load the login form in a modal)
         Mediator.fire('mediator.getAuthentication');
       } else {
-        // Route to the checkout view
-        ep.router.navigate('checkout', true);
+        Mediator.fire('mediator.navigateToCheckoutRequest', checkoutLink);
       }
-    });
-
-    // Cancel button will reload the default cart view
-    EventBus.on('cart.cancelOrderBtnClicked', function() {
-      // Route to the default cart view
-      ep.router.navigate('mycart', true);
-    });
-
-    // Submit Order Request
-    EventBus.on('cart.submitOrderRequest', function (submitOrderLink) {
-      if (submitOrderLink) {
-        ep.logger.info('SUBMIT ORDER REQUEST: ' + submitOrderLink);
-
-        var ajaxModel = new ep.io.defaultAjaxModel({
-          type: 'POST',
-          url: submitOrderLink,
-          success: function (data, textStatus, XHR) {
-            var obj = {
-              data: data,
-              textStatus: textStatus,
-              XHR: XHR
-            };
-            EventBus.trigger('cart.submitOrderSuccess', obj);
-          },
-          customErrorFn: function (response) {
-            ep.logger.error('Error submitting order: ' + response);
-            View.resetCheckoutButtonText();
-          }
-        });
-        ep.io.ajax(ajaxModel.toJSON());
-      }
-      else {
-        ep.logger.warn('cart.submitOrderRequest called with no submitOrderLink');
-      }
-    });
-    EventBus.on('cart.submitOrderSuccess', function (obj) {
-
-      var orderSummaryLink = obj.XHR.getResponseHeader('Location');
-      if (orderSummaryLink) {
-        Mediator.fire('mediator.orderProcessSuccess', orderSummaryLink);
-        pace.stop();
-      }
-      var t = orderSummaryLink;
-      ep.logger.info('ORDER SUMMARY URL - ' + t);
     });
 
     return {
-      DefaultView: defaultView,
-      CheckoutView: checkoutView
+      DefaultView: defaultView
     };
   }
 );

@@ -1,9 +1,6 @@
 /**
- * Copyright Elastic Path Software 2013.
-
- * User: sbrookes
- * Date: 04/04/13
- * Time: 9:16 AM
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
+ *
  *
  *
  */
@@ -112,7 +109,7 @@ define(['jquery','ep','app', 'eventbus', 'ext.item.models', 'ext.item.views', 't
 
           var obj = '{quantity:' + qty + '}';
           // FIXME improve robustness of oauth token when we work on that story
-          // FIXME use ajax model
+          // FIXME [CU-88] use ajax model
           ep.io.ajax({
             type: 'POST',
             contentType: 'application/json',

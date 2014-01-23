@@ -1,5 +1,5 @@
 /**
- * Copyright Elastic Path Software 2013.
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
  *
  * This is a switch board of layout.loadRegionContentRequest triggers for main views in storefront.
  */
@@ -39,15 +39,15 @@ define(function(require) {
     checkout: function() {
       EventBus.trigger('layout.loadRegionContentRequest', {
         region:'appMainRegion',
-        module:'ext.cart',
-        view:'CheckoutView'
+        module:'checkout',
+        view:'DefaultView'
       });
     },
-    confirmation: function(id){
+    purchaseReceipt: function(id){
       EventBus.trigger('layout.loadRegionContentRequest',{
         region:'appMainRegion',
-        module:'ext.receipt',
-        view:'DefaultView',
+        module:'ext.purchaseinfo',
+        view:'PurchaseReceiptView',
         data:id
       });
     },
@@ -60,6 +60,13 @@ define(function(require) {
           href: href,
           pageHref: pageHref
         }
+      });
+    },
+    newaddressform: function() {
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region: 'appMainRegion',
+        module: 'address',
+        view: 'DefaultCreateAddressView'
       });
     },
     search: function(keywords) {
@@ -77,11 +84,20 @@ define(function(require) {
         view:'DefaultView'
       });
     },
-    newaddressform: function() {
+    purchaseDetails: function(id){
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'ext.purchaseinfo',
+        view:'PurchaseDetailsView',
+        data:id
+      });
+    },
+    editaddress: function(href) {
       EventBus.trigger('layout.loadRegionContentRequest',{
         region: 'appMainRegion',
-        module: 'address',
-        view: 'DefaultCreateAddressView'
+        module: 'profile',
+        view: 'EditProfileAddressView',
+        data: href
       });
     }
   };

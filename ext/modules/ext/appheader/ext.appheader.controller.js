@@ -1,9 +1,5 @@
 /**
- * Copyright Elastic Path Software 2013.
-
- * User: sbrookes
- * Date: 05/04/13
- * Time: 1:54 PM
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
  *
  */
 define(['ep', 'mediator', 'app', 'eventbus', 'appheader.models', 'ext.appheader.views', 'text!modules/base/appheader/base.appheader.templates.html', 'text!modules/ext/appheader/ext.appheader.templates.html'],

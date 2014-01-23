@@ -1,9 +1,6 @@
 /**
- * Copyright Elastic Path Software 2013.
-
- * User: sbrookes
- * Date: 05/04/13
- * Time: 1:32 PM
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
+ *
  *
  */
 define(function(require) {
@@ -212,7 +209,7 @@ define(function(require) {
 
           var formDataObj = {
             actionLink: $(event.currentTarget).data("actionlink"),
-            qty: $('#item-select-quantity').val() || 0
+            qty: $('#category-item-select-quantity', this.el).val() || 1
           };
 
           EventBus.trigger('category.addToCartBtnClicked', formDataObj);

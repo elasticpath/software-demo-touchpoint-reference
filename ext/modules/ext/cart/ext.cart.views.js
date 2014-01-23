@@ -1,9 +1,6 @@
 /**
- * Copyright Elastic Path Software 2013.
-
- * User: sbrookes
- * Date: 04/04/13
- * Time: 9:16 AM
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
+ *
  *
  */
 define(['ep','marionette','i18n','eventbus','mediator','pace'],
@@ -96,7 +93,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
           retVar = thumbnail.absolutePath;
         }
         else{
-         retVar = 'images/img-placeholder.png';
+          retVar = 'images/img-placeholder.png';
         }
         return retVar;
       },
@@ -121,23 +118,21 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         return retVar;
       },
-      getCheckoutButtonDisabledAttrib:function(model){
-        // complete purchase disabled by default
+      getCheckoutButtonDisabledAttr:function(model){
+        // Proceed to checkout button disabled by default
         var retVar = 'disabled="disabled"';
-        // is user anonymous - return true
-        if (!ep.app.isUserLoggedIn() && (model.cartTotalQuantity > 0)){
-            retVar = '';
-        }
-        // user is logged in but may not have a submitorderaction link
-        else if(model.submitOrderActionLink){
+
+        // Check that there is at least one item in the cart
+        if (model.cartTotalQuantity > 0){
           retVar = '';
         }
+
         return  retVar;
 
       },
       checkIfVisible:function(model){
         if (model.amount.display){
-         return null;
+          return null;
         }
         return 'is-hidden';
       },
@@ -167,9 +162,9 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     };
 
     /*
-    * Functions
-    *
-    * */
+     * Functions
+     *
+     * */
     // Set Checkout Button to Processing State
     function setCheckoutButtonProcessing(){
       $('.btn-cmd-submit-order').html('<img src="images/activity-indicator-strobe.gif" />');
@@ -195,112 +190,22 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       }
     });
 
-
-
-
-
-
-    var cartCheckoutLayout = Backbone.Marionette.Layout.extend({
-      template:'#CartCheckoutLayoutTemplate',
-      templateHelpers:viewHelpers,
-      className:'cart-container container',
-      regions:{
-        cartCheckoutTitleRegion:'[data-region="cartCheckoutTitleRegion"]',
-        chosenBillingAddressRegion:'[data-region="chosenBillingAddressRegion"]',
-        cartCancelActionRegion:'[data-region="cartCancelActionRegion"]',
-        cartOrderSummaryRegion:'[data-region="cartOrderSummaryRegion"]'
-      }
-    });
-
-    // Cart Checkout Title View
-    var cartCheckoutTitleView = Backbone.Marionette.ItemView.extend({
-      template:'#CartCheckoutTitleTemplate',
-      templateHelpers:viewHelpers
-    });
-
     /**
-     * Cart Billing Address View
-     * make mediator request to load an address view in region: billingAddressComponentRegion,
-     * will render a wrapper around an address view
-     * @type Marionette.Layout
+     * A layout containing the cart summary and checkout action elements.
+     * The $el object returned by this view is not a suitable target for an activity indicator
+     * so the ui.activityIndicatorEl property is used to specify a more suitable object.
+     *
+     * @type {Backbone.Marionette.Layout}
      */
-    var cartBillingAddressLayout = Backbone.Marionette.Layout.extend({
-      template: '#CartBillingAddressTemplate',
-      templateHelpers:viewHelpers,
-      regions: {
-        billingAddressComponentRegion: '[data-region="billingAddressComponentRegion"]'
-      },
-      onShow: function() {
-        // fire event to load the address itemView from component
-        Mediator.fire('mediator.loadAddressesViewRequest', {
-          region: this.billingAddressComponentRegion,
-          model: this.model
-        });
-      }
-    });
-
-    // Cart Checkout Cancel Action View
-    var cartCancelActionView = Backbone.Marionette.ItemView.extend({
-      template:'#CartCancelActionTemplate',
-      templateHelpers:viewHelpers,
-      events:{
-        'click .btn-cancel-order':function(event){
-          EventBus.trigger('cart.cancelOrderBtnClicked');
-        }
-      }
-    });
-
-    var cartOrderSummaryLayout = Backbone.Marionette.Layout.extend({
-      template:'#CartOrderSummaryTemplate',
-      regions: {
-        cartSummaryRegion: '[data-region="cartSummaryRegion"]',
-        cartTaxesRegion: '[data-region="cartTaxesRegion"]',
-        cartTotalRegion: '[data-region="cartTotalRegion"]',
-        cartSubmitOrderRegion: '[data-region="cartSubmitOrderRegion"]'
-      }
-    });
-
-    var cartTaxItemView = Backbone.Marionette.ItemView.extend({
-      template:'#CartTaxItemTemplate',
-      tagName:'li',
-      className:'cart-tax-item'
-    });
-
-    // Cart Taxes Composite View
-    var cartTaxesView = Backbone.Marionette.CompositeView.extend({
-      template:'#CartTaxesTemplate',
-      itemView:cartTaxItemView,
-      itemViewContainer:'ul > li > ul',
-      templateHelpers:viewHelpers
-    });
-
-    // Cart Total View
-    var cartTotalView = Backbone.Marionette.ItemView.extend({
-      template:'#CartTotalTemplate',
-      templateHelpers:viewHelpers
-    });
-
-    // Cart Checkout Submit Order View
-    var cartSubmitOrderActionView = Backbone.Marionette.ItemView.extend({
-      template:'#SubmitOrderActionTemplate',
-      templateHelpers:viewHelpers,
-      events:{
-        'click .btn-cmd-submit-order':function(event){
-          EventBus.trigger('cart.submitOrderBtnClicked',this.model.get('submitOrderActionLink'));
-        }
-      }
-    });
-
-
-
-
-
-    // Cart Checkout Master View
     var cartCheckoutMasterLayout = Backbone.Marionette.Layout.extend({
       template:'#CartCheckoutMasterLayoutTemplate',
       regions:{
         cartSummaryRegion:'[data-region="cartSummaryRegion"]',
         cartCheckoutActionRegion:'[data-region="cartCheckoutActionRegion"]'
+      },
+      ui: {
+        // A jQuery selector for the DOM element to which an activity indicator should be applied.
+        activityIndicatorEl: '.cart-sidebar-inner'
       }
     });
 
@@ -498,16 +403,26 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     // Cart Summary View
     var cartSummaryView = Backbone.Marionette.ItemView.extend({
       template:'#CartSummaryTemplate',
-      templateHelpers:viewHelpers
+      templateHelpers:viewHelpers,
+      modelEvents: {
+        'change': function() {
+          this.render();
+        }
+      }
     });
 
     // Cart Checkout Action View
     var cartCheckoutActionView = Backbone.Marionette.ItemView.extend({
       template:'#CartCheckoutActionTemplate',
       templateHelpers:viewHelpers,
+      modelEvents: {
+        'change': function() {
+          this.render();
+        }
+      },
       events:{
         'click .btn-cmd-checkout':function(event){
-          EventBus.trigger('cart.checkoutBtnClicked',this.model.get('submitOrderActionLink'));
+          EventBus.trigger('cart.checkoutBtnClicked',this.model.get('checkoutLink'));
         }
       }
     });
@@ -529,15 +444,6 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       CartSummaryView:cartSummaryView,
       CartCheckoutActionView:cartCheckoutActionView,
       CartCheckoutMasterLayout:cartCheckoutMasterLayout,
-      CartCheckoutLayout:cartCheckoutLayout,
-      CartCheckoutTitleView:cartCheckoutTitleView,
-      CartBillingAddressLayout:cartBillingAddressLayout,
-      CartCancelActionView:cartCancelActionView,
-      CartOrderSummaryLayout:cartOrderSummaryLayout,
-      CartTaxesView:cartTaxesView,
-      CartTaxItemView:cartTaxItemView,
-      CartTotalView:cartTotalView,
-      CartSubmitOrderActionView:cartSubmitOrderActionView,
       setCheckoutButtonProcessing:setCheckoutButtonProcessing,
       resetCheckoutButtonText:resetCheckoutButtonText,
       resetQuantity: resetQuantity

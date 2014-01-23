@@ -1,9 +1,6 @@
 /**
- * Copyright Elastic Path Software 2013.
+ * Copyright © 2014 Elastic Path Software Inc. All rights reserved.
  *
- * User: sbrookes
- * Date: 18/03/13
- * Time: 1:26 PM
  *
  */
 
@@ -21,7 +18,7 @@ var extensionPaths = {
   'ext.item'              : 'modules/ext/item/ext.item.controller',
   'ext.item.views'        : 'modules/ext/item/ext.item.views',
   'ext.item.models'       : 'modules/ext/item/ext.item.models',
-  'ext.receipt'           : 'modules/ext/receipt/ext.receipt.controller'
+  "ext.purchaseinfo"      : 'modules/ext/purchaseinfo/ext.purchaseinfo.controller'
 };
 
 var dependencyPaths = _.extend(basePaths, extensionPaths);
