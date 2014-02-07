@@ -25,6 +25,15 @@ Generate your CSS
 
 	grunt less
 
+Edit your cortex config (if necessary) and 
+```
+	vi ext/ep.config.json
+	...
+	"cortexApi":{
+	  "path":"cortex",
+	  "scope":"software"
+	}	
+```
 Run your Storefront
 
 	cd ui-storefront
