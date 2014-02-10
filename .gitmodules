@@ -1,3 +1,3 @@
 [submodule "ui-storefront"]
 	path = ui-storefront
-	url = git@github.elasticpath.net:cortex/ui-storefront.git
+	url = https://tlukian@github.elasticpath.net/cortex/ui-storefront.git
