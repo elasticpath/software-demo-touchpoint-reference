@@ -10,3 +10,4 @@ Folders
 -------
 - *apache* - Any configuration files you want to apply to apache. *.conf will be copied into the appropriate apache conf.d.
 - *pusher* - The pusher configuration and associated sql-xml. Must be named pusher.conf and pusher-db-updates.xml, respectively.
+- *data* - Any import-export tool .jar bundles you want to import. We will include *.jar bundles.
