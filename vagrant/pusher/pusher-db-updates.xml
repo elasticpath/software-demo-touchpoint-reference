@@ -13,7 +13,7 @@
             update TSETTINGVALUE set CONTEXT_VALUE='http://127.0.0.1:8080/search' where uidpk=200050;
             update TSETTINGVALUE set CONTEXT_VALUE='http://127.0.0.1:8080/cmserver' where UIDPK=200012;
             update TSTORE set URL='http://demo.elasticpath.com:8080/storefront' where storecode='SNAPITUP';
-            update TSETTINGVALUE set CONTEXT_VALUE = 'http://cdn.elasticpath.net/images' where setting_definition_uid = 111;
+            update TSETTINGVALUE set CONTEXT_VALUE = 'http://192.168.100.101:3001/assets/' where setting_definition_uid = 111;
             insert into tindexnotify(uidpk, index_type, update_type) (select uidpk, index_type, 'REBUILD' from tindexbuildstatus);
             update tsettingdefinition set default_value = 'http://192.168.100.101:3000/productimages/' where path='COMMERCE/STORE/ASSETS/assetServerBaseUrl';
         </sql>
