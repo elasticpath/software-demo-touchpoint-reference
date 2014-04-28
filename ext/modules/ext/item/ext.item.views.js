@@ -3,27 +3,20 @@
  *
  *
  */
-define(['ep','marionette','i18n','eventbus','pace'],
-  function(ep,Marionette,i18n,EventBus,pace){
-    //console.log('fuck:  ' + i18n);
-    var viewHelpers = {
+define(function (require) {
+    var ep = require('ep');
+    var Marionette = require('marionette');
+    var Backbone = require('backbone');
+    var EventBus = require('eventbus');
+    var pace = require('pace');
+    var ViewHelpers = require('viewHelpers');
+
+    var viewHelpers = ViewHelpers.extend({
       getDisplayType:function(bHasChildren){
         if (bHasChildren){
           return 'inline-block';
         }
         return 'none';
-      },
-      getI18nLabel:function(key){
-        var retVal = key;
-        try{
-          retVal = i18n.t(key);
-        }
-        catch(e){
-          // slient failure on label rendering
-        }
-
-        return retVal;
-
       },
       getAvailabilityDisplayText:function(availability){
         var retVal = '';
@@ -104,7 +97,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
       getDefaultImagePath:function(thumbnail){
         if (thumbnail && (thumbnail.length > 0)){
           for (var i = 0;i < thumbnail.length;i++){
-            if (thumbnail[i].name == 'default-image'){
+            if (thumbnail[i].name === 'default-image'){
               return thumbnail[i].absolutePath;
               break;
             }
@@ -124,7 +117,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
         }
         return retVar;
       }
-    };
+    });
 
     // Default Item Detail Layout
     var extendedLayout = Backbone.Marionette.Layout.extend({
@@ -143,7 +136,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
     });
 
     // Default Title View
-    var defaultItemTitleView = Backbone.Marionette.ItemView.extend({
+    var defaultItemTitleView = Marionette.ItemView.extend({
       template:'#DefaultItemTitleTemplate',
       onShow:function(){
         pace.stop();
@@ -151,20 +144,20 @@ define(['ep','marionette','i18n','eventbus','pace'],
     });
 
     // Default Asset View
-    var defaultItemAssetView = Backbone.Marionette.ItemView.extend({
+    var defaultItemAssetView = Marionette.ItemView.extend({
       template:'#DefaultItemAssetTemplate',
       className:'itemdetail-asset-container',
       templateHelpers:viewHelpers
     });
 
     // Default Attribute item View
-    var defaultItemAttributeView = Backbone.Marionette.ItemView.extend({
+    var defaultItemAttributeView = Marionette.ItemView.extend({
       template:'#DefaultItemAttributeItemTemplate',
       tagName:'tr'
     });
 
     // Default Attribute List View
-    var defaultItemAttributeListView = Backbone.Marionette.CollectionView.extend({
+    var defaultItemAttributeListView = Marionette.CollectionView.extend({
       itemView:defaultItemAttributeView,
       tagName:'table',
       className:'table table-striped table-condensed'
@@ -209,7 +202,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
     });
 
     // Default Item Availability View
-    var defaultItemAvailabilityView = Backbone.Marionette.ItemView.extend({
+    var defaultItemAvailabilityView = Marionette.ItemView.extend({
       template: '#ExtItemAvailabilityTemplate',
       templateHelpers: viewHelpers,
       tagName: 'ul',
@@ -217,7 +210,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
       onShow: function () {
         // if no release date, hide dom element with release-date & the label
         if (!viewHelpers.getAvailabilityReleaseDate(this.model.get('releaseDate'))) {
-          $('[data-region="itemAvailabilityDescriptionRegion"]', this.el).addClass('is-hidden');
+          $('[data-region="itemAvailabilityDescriptionRegion"]', this.$el).addClass('is-hidden');
         }
       }
     });
@@ -225,7 +218,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
     //
     // price master view
     //
-    var defaultItemPriceView = Backbone.Marionette.Layout.extend({
+    var defaultItemPriceView = Marionette.Layout.extend({
       template: '#ItemPriceMasterViewTemplate',
       regions: {
         itemPriceRegion: $('[data-region="itemPriceRegion"]', this.el),
@@ -235,7 +228,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
         // if item has rate, load rate view
         if (this.model.attributes.rateCollection.length > 0) {
           this.itemRateRegion.show(
-            new itemRateCollectionView({
+            new ItemRateCollectionView({
               collection: new Backbone.Collection(this.model.attributes.rateCollection)
             })
           );
@@ -244,7 +237,7 @@ define(['ep','marionette','i18n','eventbus','pace'],
         // if item has one-time purchase price, load price view
         if (this.model.get('price').purchase.display) {
           this.itemPriceRegion.show(
-            new itemPriceView({
+            new ItemPriceView({
               model: new Backbone.Model(this.model.attributes.price)
             })
           );
@@ -256,34 +249,34 @@ define(['ep','marionette','i18n','eventbus','pace'],
     });
 
     // Item Price View
-    var itemPriceView = Backbone.Marionette.ItemView.extend({
+    var ItemPriceView = Marionette.ItemView.extend({
       template: '#ItemPriceTemplate',
       templateHelpers: viewHelpers,
       tagName: 'ul',
       className: 'itemdetail-price-container',
       onShow: function () {
         if (!viewHelpers.getListPrice(this.model.attributes)) {
-          $('[data-region="itemListPriceRegion"]', this.el).addClass('is-hidden');
+          $('[data-region="itemListPriceRegion"]', this.$el).addClass('is-hidden');
         }
       }
     });
 
     // Item Rate ItemView
-    var itemRateItemView = Backbone.Marionette.ItemView.extend({
+    var itemRateItemView = Marionette.ItemView.extend({
       template: '#ItemRateTemplate',
       templateHelpers: viewHelpers,
       tagName: 'li'
     });
 
     // Item Rate CollectionView
-    var itemRateCollectionView = Backbone.Marionette.CollectionView.extend({
+    var ItemRateCollectionView = Marionette.CollectionView.extend({
       itemView: itemRateItemView,
       tagName: 'ul',
       className: 'itemdetail-rate-container'
     });
 
     // Default Item Add to Cart View
-    var extItemAddToCartView = Backbone.Marionette.ItemView.extend({
+    var extItemAddToCartView = Marionette.ItemView.extend({
       template:'#ExtItemDetailAddToCartTemplate',
       templateHelpers:viewHelpers,
       events:{

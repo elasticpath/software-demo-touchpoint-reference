@@ -6,10 +6,18 @@ define(['ep', 'app', 'backbone'],
   function (ep, app, Backbone) {
     var ItemModels = {};
 
+    var zoomArray = [
+      'availability',
+      'addtocartform',
+      'price',
+      'rate',
+      'definition',
+      'definition:assets:element'
+    ];
 
     var itemModel = Backbone.Model.extend({
       getUrl: function (href) {
-        return ep.ui.decodeUri(href) + '?zoom=availability,addtocartform,price,rate,definition,definition:assets:element';
+        return ep.ui.decodeUri(href) + '?zoom=' + zoomArray.join();
       },
       parse: function (item) {
 
@@ -109,7 +117,7 @@ define(['ep', 'app', 'backbone'],
           //itemObj.asset.url = 'http://localhost:3007/images/testdata/finding-nemo.jpg';
           //itemObj.asset.url = defaultImage['content-location'];
           assetObj.absolutePath = defaultImage['content-location'];
-          assetObj.name = defaultImage['name'];
+          assetObj.name = defaultImage.name;
           assetObj.relativePath = defaultImage['relative-location'];
           assetsListArray.push(assetObj);
         }
@@ -152,7 +160,7 @@ define(['ep', 'app', 'backbone'],
 
 
         // fake a price object when neither rate nor price present
-        if (!purchasePriceObject && itemObj.rateCollection.length == 0) {
+        if (!purchasePriceObject && itemObj.rateCollection.length === 0) {
           itemObj.price.purchase = {
             display: 'none'
           };
@@ -204,7 +212,7 @@ define(['ep', 'app', 'backbone'],
         if (releaseDate) {
           availability.releaseDate = {
             displayValue: releaseDate['display-value'],
-            value: releaseDate['value']
+            value: releaseDate.value
           };
         }
       }
@@ -221,7 +229,7 @@ define(['ep', 'app', 'backbone'],
           currency: jsonPath(rawObject, '$.currency')[0],
           amount: jsonPath(rawObject, '$.amount')[0],
           display: jsonPath(rawObject, '$.display')[0]
-        }
+        };
       }
       catch (error) {
         ep.logger.error('Error building price object: ' + error.message);
@@ -247,18 +255,18 @@ define(['ep', 'app', 'backbone'],
           amount: jsonPath(rates[i], '$.cost..amount')[0],
           currency: jsonPath(rates[i], '$.cost..currency')[0],
           display: jsonPath(rates[i], '$.cost..display')[0]
-        }
+        };
 
         rateObj.recurrence = {
           interval: jsonPath(rates[i], '$.recurrence..interval')[0],
           display: jsonPath(rates[i], '$.recurrence..display')[0]
-        }
+        };
 
         rateCollection.push(rateObj);
       }
 
       return rateCollection;
-    }
+    };
 
     var addAttributeToList = function (list, rawObj, insertIndex) {
       var attributeObj = {
@@ -268,7 +276,7 @@ define(['ep', 'app', 'backbone'],
       }
 
       list.splice(insertIndex, 0, attributeObj);
-    }
+    };
 
     // Required, return the module for AMD compliance
     return {

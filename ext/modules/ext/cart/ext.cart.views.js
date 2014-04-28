@@ -3,22 +3,18 @@
  *
  *
  */
-define(['ep','marionette','i18n','eventbus','mediator','pace'],
-  function(ep,Marionette,i18n,EventBus,Mediator,pace){
+define(function (require) {
+    var ep = require('ep');
+    var Marionette = require('marionette');
+    var Backbone = require('backbone');
+    var i18n = require('i18n');
+    var EventBus = require('eventbus');
+    var Mediator = require('mediator');
+    var pace = require('pace');
+    var ViewHelpers = require('viewHelpers');
+
     pace.start();
-    var viewHelpers = {
-      getI18nLabel:function(key){
-        var retVal = key;
-        try{
-          retVal = i18n.t(key);
-        }
-        catch(e){
-          // slient failure on label rendering
-        }
-
-        return retVal;
-
-      },
+    var viewHelpers = ViewHelpers.extend ({
       getAvailabilityDisplayText:function(availability){
         var retVal = '';
         switch(availability){
@@ -118,17 +114,15 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         return retVar;
       },
+      /**
+       * Returns a disabled attribute for the checkout button if there is not at least one item in the cart.
+       * @param model The checkout model.
+       * @returns {string} The disabled attribute or empty string.
+       */
       getCheckoutButtonDisabledAttr:function(model){
-        // Proceed to checkout button disabled by default
-        var retVar = 'disabled="disabled"';
-
-        // Check that there is at least one item in the cart
-        if (model.cartTotalQuantity > 0){
-          retVar = '';
-        }
-
-        return  retVar;
-
+        return ViewHelpers.getButtonDisabledAttr(function() {
+          return (model.cartTotalQuantity > 0);
+        });
       },
       checkIfVisible:function(model){
         if (model.amount.display){
@@ -159,24 +153,14 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         return optionHtml;
       }
-    };
+    });
 
     /*
-     * Functions
-     *
-     * */
-    // Set Checkout Button to Processing State
-    function setCheckoutButtonProcessing(){
-      $('.btn-cmd-submit-order').html('<img src="images/activity-indicator-strobe.gif" />');
-
-    }
-    // Set Checkout Button to Ready State
-    function resetCheckoutButtonText(){
-      $('.btn-cmd-submit-order').html(viewHelpers.getI18nLabel('cart.submitOrder'));
-    }
-
+    * Functions
+    *
+    * */
     // Default Layout
-    var defaultLayout = Backbone.Marionette.Layout.extend({
+    var defaultLayout = Marionette.Layout.extend({
       template:'#DefaultCartLayoutTemplate',
       templateHelpers:viewHelpers,
       className:'cart-container container',
@@ -195,9 +179,9 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
      * The $el object returned by this view is not a suitable target for an activity indicator
      * so the ui.activityIndicatorEl property is used to specify a more suitable object.
      *
-     * @type {Backbone.Marionette.Layout}
+     * @type {Marionette.Layout}
      */
-    var cartCheckoutMasterLayout = Backbone.Marionette.Layout.extend({
+    var cartCheckoutMasterLayout = Marionette.Layout.extend({
       template:'#CartCheckoutMasterLayoutTemplate',
       regions:{
         cartSummaryRegion:'[data-region="cartSummaryRegion"]',
@@ -210,13 +194,13 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     });
 
     // Cart Title View
-    var cartTitleView = Backbone.Marionette.ItemView.extend({
+    var cartTitleView = Marionette.ItemView.extend({
       template:'#CartTitleTemplate',
       templateHelpers:viewHelpers
     });
 
     // Cart Line Item Layout
-    var cartLineItemLayout = Backbone.Marionette.Layout.extend({
+    var cartLineItemLayout = Marionette.Layout.extend({
       template:'#CartLineItemTemplate',
       tagName:'tr',
       templateHelpers:viewHelpers,
@@ -244,7 +228,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         // show availability if at least has availability state
         if (this.model.get('availability').state) {
           this.cartLineitemAvailabilityRegion.show(
-            new itemAvailabilityView({
+            new ItemAvailabilityView({
               model: new Backbone.Model(this.model.get('availability'))
             })
           );
@@ -252,7 +236,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         // show unit price
         this.cartLineitemUnitPriceRegion.show(
-          new itemUnitPriceLayout({
+          new ItemUnitPriceLayout({
             model: new Backbone.Model({
               price: this.model.attributes.unitPrice,
               rateCollection: this.model.attributes.unitRateCollection
@@ -262,7 +246,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
         // show total price
         this.cartLineitemTotalPriceRegion.show(
-          new itemTotalPriceLayout({
+          new ItemTotalPriceLayout({
             model: new Backbone.Model({
               price: this.model.attributes.price,
               rateCollection: this.model.attributes.rateCollection
@@ -274,7 +258,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     });
 
     // Item Availability
-    var itemAvailabilityView = Backbone.Marionette.ItemView.extend({
+    var ItemAvailabilityView = Marionette.ItemView.extend({
       template: '#ExtCartLineItemAvailabilityTemplate',
       templateHelpers: viewHelpers,
       tagName: 'ul',
@@ -290,7 +274,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     //
     // price master view
     //
-    var itemUnitPriceLayout = Backbone.Marionette.Layout.extend({
+    var ItemUnitPriceLayout = Marionette.Layout.extend({
       template: '#CartLineItemUnitPriceMasterTemplate',
       regions: {
         itemPriceRegion: $('[data-region="itemUnitPriceRegion"]', this.el),
@@ -300,7 +284,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         // if item has rate, load rate view
         if (this.model.attributes.rateCollection.length > 0) {
           this.itemRateRegion.show(
-            new itemRateCollectionView({
+            new ItemRateCollectionView({
               className: 'cart-lineitem-unit-rate-container',
               collection: new Backbone.Collection(this.model.attributes.rateCollection)
             })
@@ -310,7 +294,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         // if item has one-time purchase price, load price view
         if (this.model.get('price').purchase.display) {
           this.itemPriceRegion.show(
-            new itemPriceView({
+            new ItemPriceView({
               template: '#CartLineItemUnitPriceTemplate',
               model: new Backbone.Model(this.model.attributes.price)
             })
@@ -322,7 +306,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       }
     });
 
-    var itemTotalPriceLayout = Backbone.Marionette.Layout.extend({
+    var ItemTotalPriceLayout = Marionette.Layout.extend({
       template: '#CartLineItemTotalPriceMasterTemplate',
       regions: {
         itemPriceRegion: $('[data-region="itemTotalPriceRegion"]', this.el),
@@ -332,7 +316,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         // if item has rate, load rate view
         if (this.model.attributes.rateCollection.length > 0) {
           this.itemRateRegion.show(
-            new itemRateCollectionView({
+            new ItemRateCollectionView({
               className: 'cart-lineitem-total-rate-container',
               collection: new Backbone.Collection(this.model.attributes.rateCollection)
             })
@@ -342,7 +326,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
         // if item has one-time purchase price, load price view
         if (this.model.get('price').purchase.display) {
           this.itemPriceRegion.show(
-            new itemPriceView({
+            new ItemPriceView({
               template: '#CartLineItemTotalPriceTemplate',
               model: new Backbone.Model(this.model.attributes.price)
             })
@@ -356,19 +340,19 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
 
 
     // Item Price View
-    var itemPriceView = Backbone.Marionette.ItemView.extend({
+    var ItemPriceView = Marionette.ItemView.extend({
       templateHelpers: viewHelpers,
       className: 'cart-lineitem-price-container',
       tagName: 'ul',
       onShow: function () {
         if (!viewHelpers.getListPrice(this.model.attributes)) {
-          $('[data-region="itemListPriceRegion"]', this.el).addClass('is-hidden');
+          $('[data-region="itemListPriceRegion"]', this.$el).addClass('is-hidden');
         }
       }
     });
 
     // Item Rate ItemView
-    var itemRateItemView = Backbone.Marionette.ItemView.extend({
+    var itemRateItemView = Marionette.ItemView.extend({
       template: '#CartLineItemRateTemplate',
       templateHelpers: viewHelpers,
       className: 'cart-lineitem-rate',
@@ -376,20 +360,20 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     });
 
     // Item Rate CollectionView
-    var itemRateCollectionView = Backbone.Marionette.CollectionView.extend({
+    var ItemRateCollectionView = Marionette.CollectionView.extend({
       itemView: itemRateItemView,
       tagName: 'ul'
     });
 
     // Empty Cart View
-    var emptyCartView = Backbone.Marionette.ItemView.extend({
+    var emptyCartView = Marionette.ItemView.extend({
       template:'#EmptyCartTemplate',
       templateHelpers:viewHelpers,
       className:"cart-empty-container"
     });
 
     // Main Cart View
-    var mainCartView = Backbone.Marionette.CompositeView.extend({
+    var mainCartView = Marionette.CompositeView.extend({
       template:'#MainCartTemplate',
       itemView:cartLineItemLayout,
       itemViewContainer:'tbody',
@@ -401,7 +385,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     });
 
     // Cart Summary View
-    var cartSummaryView = Backbone.Marionette.ItemView.extend({
+    var cartSummaryView = Marionette.ItemView.extend({
       template:'#CartSummaryTemplate',
       templateHelpers:viewHelpers,
       modelEvents: {
@@ -412,7 +396,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
     });
 
     // Cart Checkout Action View
-    var cartCheckoutActionView = Backbone.Marionette.ItemView.extend({
+    var cartCheckoutActionView = Marionette.ItemView.extend({
       template:'#CartCheckoutActionTemplate',
       templateHelpers:viewHelpers,
       modelEvents: {
@@ -423,6 +407,26 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       events:{
         'click .btn-cmd-checkout':function(event){
           EventBus.trigger('cart.checkoutBtnClicked',this.model.get('checkoutLink'));
+        }
+      }
+    });
+
+    /**
+     * This view is rendered in the modal region to obtain confirmation from the user before proceeding
+     * with a request to remove a line item from the cart.
+     */
+    var cartRemoveLineItemConfirmView = Marionette.ItemView.extend({
+      className:'cart-remove-confirm-modal',
+      template:'#CartRemoveLineItemConfirmModalTemplate',
+      templateHelpers:viewHelpers,
+      events:{
+        'click .btn-yes':function(event) {
+          event.preventDefault();
+          EventBus.trigger('cart.removeLineItemConfirmYesBtnClicked', this.options.href);
+        },
+        'click .btn-no':function(event) {
+          event.preventDefault();
+          $.modal.close();
         }
       }
     });
@@ -444,8 +448,7 @@ define(['ep','marionette','i18n','eventbus','mediator','pace'],
       CartSummaryView:cartSummaryView,
       CartCheckoutActionView:cartCheckoutActionView,
       CartCheckoutMasterLayout:cartCheckoutMasterLayout,
-      setCheckoutButtonProcessing:setCheckoutButtonProcessing,
-      resetCheckoutButtonText:resetCheckoutButtonText,
+      CartRemoveLineItemConfirmView: cartRemoveLineItemConfirmView,
       resetQuantity: resetQuantity
     };
   }

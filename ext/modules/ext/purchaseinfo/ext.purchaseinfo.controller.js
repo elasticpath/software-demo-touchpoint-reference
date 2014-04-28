@@ -9,6 +9,8 @@
 define(function (require) {
     var ep = require('ep');
     var Backbone = require('backbone');
+    var Mediator = require('mediator');
+    var EventBus = require('eventbus');
     var pace = require('pace');
     var i18n = require('i18n');
 
@@ -25,7 +27,7 @@ define(function (require) {
     var purchasesModel = new Model.PurchaseInfoModel();
 
     /**
-     * Renders a default purchase purchaseinfo view. Instantiate the wrapper view PurchaseReceiptLayout,
+     * Renders a default purchase receipt view. Instantiate the wrapper view PurchaseReceiptLayout,
      * and onShow of this view, call to render purchase information views.
      * @param   href to a cortex purchase resource
      * @returns {View.PurchaseReceiptLayout} PurchaseReceiptLayout with child views ready to render
@@ -70,7 +72,8 @@ define(function (require) {
 
       purchasesModel.fetch({
         url: purchasesModel.getUrl(receiptLink),
-
+        // disable caching of the GET request to avoid suppression of 403 authentication errors
+        cache: false,
         success: function (response) {
           var purchaseSummaryView = new View.PurchaseSummaryView({
             model: purchasesModel
@@ -98,6 +101,9 @@ define(function (require) {
       return purchaseInfoLayout;
     };
 
+    EventBus.on('purchaseinfo.registrationButtonClicked', function() {
+      Mediator.fire('mediator.registrationRequest');
+    });
 
     return {
       PurchaseReceiptView: purchaseReceiptView,

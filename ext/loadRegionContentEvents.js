@@ -14,19 +14,18 @@ define(function(require) {
         view:'AppHeaderView'
       });
     },
-    index: function() {
-      EventBus.trigger('layout.loadRegionContentRequest',{
-        region:'appMainRegion',
-        module:'home',
-        view:'IndexLayout'
+    checkoutAuth: function() {
+      EventBus.trigger('layout.loadRegionContentRequest', {
+        region: 'appMainRegion',
+        module: 'auth',
+        view: 'CheckoutAuthOptionsController'
       });
     },
-    item: function(href) {
+    authProfileMenu: function() {
       EventBus.trigger('layout.loadRegionContentRequest',{
-        region:'appMainRegion',
-        module:'ext.item',
-        view:'DefaultView',
-        data:href
+        region:'mainAuthView',
+        module:'auth',
+        view: 'ProfileMenuView'
       });
     },
     cart: function(){
@@ -34,21 +33,6 @@ define(function(require) {
         region:'appMainRegion',
         module:'ext.cart',
         view:'DefaultView'
-      });
-    },
-    checkout: function() {
-      EventBus.trigger('layout.loadRegionContentRequest', {
-        region:'appMainRegion',
-        module:'checkout',
-        view:'DefaultView'
-      });
-    },
-    purchaseReceipt: function(id){
-      EventBus.trigger('layout.loadRegionContentRequest',{
-        region:'appMainRegion',
-        module:'ext.purchaseinfo',
-        view:'PurchaseReceiptView',
-        data:id
       });
     },
     category: function(href, pageHref) {
@@ -62,11 +46,85 @@ define(function(require) {
         }
       });
     },
+    checkout: function() {
+      EventBus.trigger('layout.loadRegionContentRequest', {
+        region:'appMainRegion',
+        module:'checkout',
+        view:'DefaultController'
+      });
+    },
+    editaddress: function(href) {
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region: 'appMainRegion',
+        module: 'address',
+        view: 'DefaultEditAddressView',
+        data: href
+      });
+    },
+    index: function() {
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'home',
+        view:'IndexLayout'
+      });
+    },
+    itemDetail: function(href) {
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'ext.item',
+        view:'DefaultView',
+        data:href
+      });
+    },
+    loginModal: function() {
+      EventBus.trigger('layout.loadRegionContentRequest', {
+        region: 'appModalRegion',
+        module: 'auth',
+        view: 'LoginFormView'
+      });
+    },
     newaddressform: function() {
       EventBus.trigger('layout.loadRegionContentRequest',{
         region: 'appMainRegion',
         module: 'address',
         view: 'DefaultCreateAddressView'
+      });
+    },
+    newpaymentform: function() {
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region: 'appMainRegion',
+        module: 'payment',
+        view: 'DefaultCreatePaymentController'
+      });
+    },
+    profile: function(){
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'profile',
+        view:'DefaultController'
+      });
+    },
+    purchaseDetails: function(id){
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'purchaseinfo',
+        view:'PurchaseDetailsView',
+        data:id
+      });
+    },
+    purchaseReceipt: function(id){
+      EventBus.trigger('layout.loadRegionContentRequest',{
+        region:'appMainRegion',
+        module:'ext.purchaseinfo',
+        view:'PurchaseReceiptView',
+        data:id
+      });
+    },
+    registration: function() {
+      EventBus.trigger('layout.loadRegionContentRequest', {
+        region:'appMainRegion',
+        module:'registration',
+        view:'DefaultController'
       });
     },
     search: function(keywords) {
@@ -75,29 +133,6 @@ define(function(require) {
         module:'search',
         view:'SearchResultsView',
         data:keywords
-      });
-    },
-    profile: function(){
-      EventBus.trigger('layout.loadRegionContentRequest',{
-        region:'appMainRegion',
-        module:'profile',
-        view:'DefaultView'
-      });
-    },
-    purchaseDetails: function(id){
-      EventBus.trigger('layout.loadRegionContentRequest',{
-        region:'appMainRegion',
-        module:'ext.purchaseinfo',
-        view:'PurchaseDetailsView',
-        data:id
-      });
-    },
-    editaddress: function(href) {
-      EventBus.trigger('layout.loadRegionContentRequest',{
-        region: 'appMainRegion',
-        module: 'profile',
-        view: 'EditProfileAddressView',
-        data: href
       });
     }
   };

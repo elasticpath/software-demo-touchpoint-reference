@@ -6,6 +6,17 @@
 define(['ep', 'eventbus', 'backbone'],
   function (ep, EventBus, Backbone) {
 
+    // Array of zoom parameters to pass to Cortex
+    var itemPageZoomArray = [
+      'element',
+      'element:availability',
+      'element:definition',
+      'element:definition:assets:element',
+      'element:price',
+      'element:rate',
+      'element:addtocartform'
+    ];
+
     /*
      * Category Model (fetching category info from server)
      */
@@ -31,7 +42,7 @@ define(['ep', 'eventbus', 'backbone'],
      */
     var categoryItemPageModel = Backbone.Model.extend({
       getUrl: function (href) {
-        return ep.ui.decodeUri(href) + '?zoom=element, element:availability,element:definition,element:definition:assets:element,element:price,element:rate,element:addtocartform';
+        return ep.ui.decodeUri(href) + '?zoom=' + itemPageZoomArray.join();
       },
       parse: function (response) {
         var categoryObj = {};
@@ -47,11 +58,11 @@ define(['ep', 'eventbus', 'backbone'],
         var pageLinks = jsonPath(response, '$.links')[0]; // comment about paging specific
 
         categoryObj.pagination.stats = {
-          currentPage: pageStats['current'],
-          numOfPages: pageStats['pages'],
+          currentPage: pageStats.current,
+          numOfPages: pageStats.pages,
           resultsOnPage: pageStats['results-on-page'],
           pageSize: pageStats['page-size'],
-          totalResults: pageStats['results']
+          totalResults: pageStats.results
         };
 
         categoryObj.pagination.links.next = jsonPath(pageLinks, "$.[?(@.rel=='next')].href")[0];
@@ -61,9 +72,10 @@ define(['ep', 'eventbus', 'backbone'],
          * category item browse
          */
         categoryObj.itemCollection = [];
+        var itemArrayLen;
         var itemArray = jsonPath(response, '$.._element')[0];
         if (itemArray) {
-          var itemArrayLen = itemArray.length;
+          itemArrayLen = itemArray.length;
         }
 
         for (var i = 0; i < itemArrayLen; i++) {
@@ -89,7 +101,7 @@ define(['ep', 'eventbus', 'backbone'],
           // item prices
           itemObj.price = {};
           var listPrice = jsonPath(itemArray[i], '$._price..list-price')[0];
-          itemObj.price.listed = parsePrice(listPrice)
+          itemObj.price.listed = parsePrice(listPrice);
 
           var purchasePrice = jsonPath(itemArray[i], '$._price..purchase-price')[0];
           itemObj.price.purchase = parsePrice(purchasePrice);
@@ -99,7 +111,7 @@ define(['ep', 'eventbus', 'backbone'],
           itemObj.rateCollection = parseRates(rates);
 
           // fake a price object when neither rate nor price present
-          if (!purchasePrice && itemObj.rateCollection.length == 0) {
+          if (!purchasePrice && itemObj.rateCollection.length === 0) {
             itemObj.price.purchase = {
               display: 'none'
             };
@@ -141,7 +153,7 @@ define(['ep', 'eventbus', 'backbone'],
         defaultImg = {
           absolutePath: imgObj['content-location'],
           relativePath: imgObj['relative-location'],
-          name: imgObj['name']
+          name: imgObj.name
         };
       }
 
@@ -158,7 +170,7 @@ define(['ep', 'eventbus', 'backbone'],
         if (releaseDate) {
           availability.releaseDate = {
             displayValue: releaseDate['display-value'],
-            value: releaseDate['value']
+            value: releaseDate.value
           };
         }
       }
@@ -175,7 +187,7 @@ define(['ep', 'eventbus', 'backbone'],
           currency: priceObj[0].currency,
           amount: priceObj[0].amount,
           display: priceObj[0].display
-        }
+        };
       }
 
       return price;
@@ -198,12 +210,12 @@ define(['ep', 'eventbus', 'backbone'],
           amount: jsonPath(rates[i], '$.cost..amount')[0],
           currency: jsonPath(rates[i], '$.cost..currency')[0],
           display: jsonPath(rates[i], '$.cost..display')[0]
-        }
+        };
 
         rateObj.recurrence = {
           interval: jsonPath(rates[i], '$.recurrence..interval')[0],
           display: jsonPath(rates[i], '$.recurrence..display')[0]
-        }
+        };
 
         rateCollection.push(rateObj);
       }

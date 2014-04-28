@@ -268,17 +268,37 @@ define(function (require) {
     });
 
     /**
+     * Called when the yes button in the confirm modal is clicked. This handler closes any open modal windows,
+     * starts the activity indicator for the regions to be updated and triggers the remove item request to Cortex.
+     */
+    EventBus.on('cart.removeLineItemConfirmYesBtnClicked', function(actionLink) {
+      $.modal.close();
+      ep.ui.startActivityIndicator(cartLayout.mainCartRegion.currentView);
+      ep.ui.startActivityIndicator(cartLayout.cartCheckoutMasterRegion.currentView);
+      EventBus.trigger('cart.removeLineItemRequest', actionLink);
+    });
+
+    /**
      * Prompts the user to confirm deletion with a JavaScript confirmation alert and then
      * starts activity indicators on those cart regions that contain data which could
      * change following a successful cart item deletion.
      */
-    EventBus.on('cart.removeLineItemBtnClicked', function (actionLink) {
-      var confirmation = window.confirm("Do you really want to delete this item");
-      if (confirmation) {
-        ep.ui.startActivityIndicator(cartLayout.mainCartRegion.currentView);
-        ep.ui.startActivityIndicator(cartLayout.cartCheckoutMasterRegion.currentView);
-        EventBus.trigger('cart.removeLineItemRequest', actionLink);
-      }
+    EventBus.on('cart.removeLineItemConfirm', function (actionLink) {
+      EventBus.trigger('layout.loadRegionContentRequest', {
+        region: 'appModalRegion',
+        module: 'cart',
+        view: 'CartRemoveLineItemConfirmView',
+        data: {
+          href: actionLink
+        }
+      });
+    });
+
+    /**
+     * Handler for the remove line item button clicked signal, which triggers a request for confirmation from the user.
+     */
+    EventBus.on('cart.removeLineItemBtnClicked', function(actionLink) {
+      EventBus.trigger('cart.removeLineItemConfirm', actionLink);
     });
 
     /**
@@ -290,19 +310,23 @@ define(function (require) {
       ep.router.controller.cart();
     });
 
+    /* ********** Checkout EVENT LISTENERS ********** */
     // Proceed to checkout button checks if the user is logged in and loads the checkout summary
     EventBus.on('cart.checkoutBtnClicked', function(checkoutLink) {
       // User not logged in and config set to require login
-      if (ep.app.config.requireAuthToCheckout && (!ep.app.isUserLoggedIn())) {
-        // Fire event to get authenticated (e.g. load the login form in a modal)
-        Mediator.fire('mediator.getAuthentication');
-      } else {
+      if ((ep.app.isUserLoggedIn())) {
         Mediator.fire('mediator.navigateToCheckoutRequest', checkoutLink);
+      } else {
+        // Fire event to get authenticated for checkout
+        Mediator.fire('mediator.authenticateForCheckout', checkoutLink);
       }
     });
 
     return {
-      DefaultView: defaultView
+      DefaultView: defaultView,
+      CartRemoveLineItemConfirmView: function(options) {
+        return new View.CartRemoveLineItemConfirmView(options);
+      }
     };
   }
 );

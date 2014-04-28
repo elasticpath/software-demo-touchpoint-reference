@@ -32,6 +32,17 @@
     </li>
   </script>
 
+  <!-- The confirmation modal for removal of a cart line item -->
+  <script id="CartRemoveLineItemConfirmModalTemplate" type="text/template">
+    <p><%= E.getI18nLabel('cart.removeConfirmMsg') %></p>
+    <button class="btn btn-primary btn-yes"><%= E.getI18nLabel('general.yes') %></button>
+    <button class="btn btn-primary btn-no"><%= E.getI18nLabel('general.no') %></button>
+  </script>
+
+  <!-- Empty Cart Template -->
+  <script id="EmptyCartTemplate" type="text/template">
+    <span class="cart-empty-message"><%= E.getI18nLabel('cart.emptyCartMsg') %></span>
+  </script>
 
 </div>
 
