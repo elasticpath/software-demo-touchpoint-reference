@@ -1,5 +1,9 @@
-Software-Demo
-=============
+---
+layout: master
+permalink: /
+title: Home
+weight: 1
+---
 
 The software demo, based on the HTML 5 storefront, backed by Cortex.
 

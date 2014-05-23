@@ -1,0 +1,4 @@
+baseurl: /software-demo-touchpoint-reference
+relative_permalinks: false
+markdown: kramdown
+repository: https://github.com/elasticpath/software-demo-touchpoint-reference
