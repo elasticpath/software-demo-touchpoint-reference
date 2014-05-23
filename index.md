@@ -25,19 +25,20 @@ Install the required node libraries
 	cd ..
 	npm install grunt-contrib-uglify grunt-contrib-watch grunt-contrib-less grunt-contrib-requirejs
 	
+
 Generate your CSS
 
 	grunt less
 
 Edit your cortex config (if necessary) and 
-```
+
 	vi ext/ep.config.json
 	...
 	"cortexApi":{
 	  "path":"cortex",
 	  "scope":"software"
 	}	
-```
+
 Run your Storefront
 
 	cd ui-storefront
