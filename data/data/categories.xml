@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <categories>
 <category mastercatalog="SOFTWARE">
+	<guid>833d4242-aaf4-44bc-8833-f2112773b64f</guid>
     <parentcategory></parentcategory>
     <code>Renewal</code>
     <name>
@@ -39,6 +40,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>e96da9be-6768-46fb-ab98-a2226ba3c0e4</guid>
     <parentcategory></parentcategory>
     <code>Subscriptions</code>
     <name>
@@ -77,6 +79,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>8e62b6ce-a470-4d77-94e9-72970d49a9de</guid>
     <parentcategory></parentcategory>
     <code>infrastructure_software</code>
     <name>
@@ -115,6 +118,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>b0ccf48a-8505-42e2-bc40-02146ef24c32</guid>
     <parentcategory></parentcategory>
     <code>Products</code>
     <name>
@@ -153,6 +157,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>817477ff-d38b-48c9-b539-97f8de282819</guid>
     <parentcategory></parentcategory>
     <code>All</code>
     <name>
@@ -191,6 +196,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>dc902655-cde6-4f2a-a00b-6a8600459e86</guid>
     <parentcategory></parentcategory>
     <code>security_anti_virus</code>
     <name>
@@ -229,6 +235,7 @@
 </category>
 
 <category mastercatalog="SOFTWARE">
+	<guid>8d549b43-02a5-4f09-b0c9-0f32897dc26c</guid>
     <parentcategory></parentcategory>
     <code>Trials</code>
     <name>

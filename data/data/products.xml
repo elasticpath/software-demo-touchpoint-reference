@@ -2441,7 +2441,7 @@ Microsoft® Windows® XP SP2 or higher, Windows Vista®, or Windows 7; Internet 
             <code>1seat_perp</code>
             <skuoptions>
                 <skuoption code="Seats">
-                    <skuoptionvalue>1</skuoptionvalue>
+                    <skuoptionvalue>1seat</skuoptionvalue>
                 </skuoption>
                 <skuoption code="ContractLength">
                     <skuoptionvalue>perpetuity</skuoptionvalue>
@@ -2485,7 +2485,7 @@ Microsoft® Windows® XP SP2 or higher, Windows Vista®, or Windows 7; Internet 
             <code>1seat_1year</code>
             <skuoptions>
                 <skuoption code="Seats">
-                    <skuoptionvalue>1</skuoptionvalue>
+                    <skuoptionvalue>1seat</skuoptionvalue>
                 </skuoption>
                 <skuoption code="ContractLength">
                     <skuoptionvalue>1yr</skuoptionvalue>
@@ -2723,7 +2723,7 @@ Microsoft® Windows® XP SP2 or higher, Windows Vista®, or Windows 7; Internet 
             <code>va_pro_1seat</code>
             <skuoptions>
                 <skuoption code="Seats">
-                    <skuoptionvalue>1</skuoptionvalue>
+                    <skuoptionvalue>1seat</skuoptionvalue>
                 </skuoption>
                 <skuoption code="ContractLength">
                     <skuoptionvalue>perpetuity</skuoptionvalue>
@@ -2833,7 +2833,7 @@ Microsoft® Windows® XP SP2 or higher, Windows Vista®, or Windows 7; Internet 
             <code>1seat_1year_pro</code>
             <skuoptions>
                 <skuoption code="Seats">
-                    <skuoptionvalue>1</skuoptionvalue>
+                    <skuoptionvalue>1seat</skuoptionvalue>
                 </skuoption>
                 <skuoption code="ContractLength">
                     <skuoptionvalue>1yr</skuoptionvalue>
